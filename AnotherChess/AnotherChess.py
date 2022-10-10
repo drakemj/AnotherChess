@@ -1,3 +1,7 @@
+from Board import *
 
-print("hello world!")
+board = Board()
+board.printBoard()
 
+print()
+board.printBoard(board.availableMoves(0, 1))
