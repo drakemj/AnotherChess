@@ -4,4 +4,5 @@ board = Board()
 board.printBoard()
 
 print()
-board.printBoard(board.availableMoves(0, 1))
+board.turn = False
+board.printBoard(board.availableMoves(6, 7))
