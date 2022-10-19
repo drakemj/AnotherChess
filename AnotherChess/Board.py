@@ -22,7 +22,6 @@ class Board:
             else:
                 self.board[i][0] = 9 - i
                 self.board[i][7] = 19 - i
-        self.board[2][2] = 6
 
     def printBoard(self, b = board):
         for i in range(7, -1, -1):
