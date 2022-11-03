@@ -1,7 +1,13 @@
 from math import trunc
 from sqlite3 import IntegrityError
 from Board import *
+import pygame, sys
 
+pygame.init()
+size = width, height = 400, 400
+black = 0, 0, 0
+
+screen = pygame.display.set_mode(size)
 board = Board()
 board.printBoard()
 
@@ -28,8 +34,10 @@ def testInput(col, row):
             continue
         return [col, row]
 
-
-while True:             #temporary, ideally some of this functionality should be in another file or something like that (esp ref to board members, etc)
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: sys.exit()
+    
     col = row = 0       #no turn checking even exists here
     print("select piece (col row): ")
     col, row = testInput(col, row)
@@ -50,5 +58,8 @@ while True:             #temporary, ideally some of this functionality should be
 
     board.turn = not board.turn
     board.printBoard()
+
+    screen.fill(black)
+    pygame.display.flip()
 
 
