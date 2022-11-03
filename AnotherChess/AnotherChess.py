@@ -4,62 +4,35 @@ from Board import *
 import pygame, sys
 
 pygame.init()
-size = width, height = 400, 400
+size = WIDTH, HEIGHT = 400, 400
 black = 0, 0, 0
+
+whitePawn = pygame.image.load("assets/Chess_plt60.png")        # probably do this in some other file at some point
+blackPawn = pygame.image.load("assets/Chess_pdt60.png")
+whiteRook = pygame.image.load("assets/Chess_rlt60.png")
+blackRook = pygame.image.load("assets/Chess_rdt60.png")
+whiteKnight = pygame.image.load("assets/Chess_klt60.png")
+blackKnight = pygame.image.load("assets/Chess_kdt60.png")
+whiteBishop = pygame.image.load("assets/Chess_blt60.png")
+blackBishop = pygame.image.load("assets/Chess_bdt60.png")
+whiteQueen = pygame.image.load("assets/Chess_qlt60.png")
+blackQueen = pygame.image.load("assets/Chess_qdt60.png")
+whiteKing = pygame.image.load("assets/Chess_klt60.png")
+blackKing = pygame.image.load("assets/Chess_kdt60.png")
+whiteSquare = pygame.image.load("assets/whiteSq.png")
+blackSquare = pygame.image.load("assets/blackSq.png")
+
+assets = [None, whitePawn, whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, whiteSquare, blackSquare, None, blackPawn, blackRook, 
+blackKnight, blackBishop, blackQueen, blackQueen]
 
 screen = pygame.display.set_mode(size)
 board = Board()
 board.printBoard()
 
-def testInput(col, row):
-    while (True):
-        x = input()
-        list = x.split(" ")
-        if len(list) <= 1:
-            print("not enough args")
-            continue
-        elif len(list) > 2:
-            print("too many args")
-            continue
-        
-        try:
-            col = int(list[0])
-            row = int(list[1])
-        except:
-            print("invalid input, only numbers 0-7")
-            continue
-
-        if col < 0 or col > 7 or row < 0 or row > 7:
-            print("out of range")
-            continue
-        return [col, row]
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-    
-    col = row = 0       #no turn checking even exists here
-    print("select piece (col row): ")
-    col, row = testInput(col, row)
-    while board.board[col][row] == 0:
-        print("invalid piece")
-        col, row = testInput(col, row)  #again, probably change this. seems messy
-
-    n_col = n_row = 0
-    print("select move (col row): ")
-    n_col, n_row = testInput(n_col, n_row)
-    while board.availableMoves(col, row)[n_col][n_row] == 0: #creating new array every time. slow. also you can get softlocked if the piece has no moves
-        print("invalid move")
-        n_col, n_row = testInput(n_col, n_row)
-
-    piece = board.board[col][row]      #will have a function eventually
-    board.board[col][row] = 0
-    board.board[n_col][n_row] = piece
-
-    board.turn = not board.turn
-    board.printBoard()
 
     screen.fill(black)
+    screen.blit(assets[1], (0, 0))
     pygame.display.flip()
-
-
