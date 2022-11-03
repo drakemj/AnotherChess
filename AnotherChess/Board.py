@@ -23,14 +23,19 @@ class Board:
                 self.board[i][0] = 9 - i
                 self.board[i][7] = 19 - i
 
-    def printBoard(self, b = board):
+    def printBoard(self, screen, assets, size):
+        screen.fill((0, 0, 0))
         for i in range(7, -1, -1):
             for j in range(8):
-                print(b[j][i], end = '')
-                if b[j][i]/10 < 1:
-                    print(" ", end = '')
-                print(" ", end = '')
-            print()
+                x = j
+                y = 7 - i
+                if (x + y)%2 == 0:
+                    screen.blit(assets[7], (x*size, y*size))
+                else:
+                    screen.blit(assets[8], (x*size, y*size))
+                if self.board[j][i]:
+                    screen.blit(assets[self.board[j][i]], (x*size, y*size))         
+                    
                     
     def inBounds(self, col, row):
         return col >= 0 and col < 8 and row >= 0 and row < 8
