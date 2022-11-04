@@ -36,6 +36,16 @@ class Board:
                 if self.board[j][i]:
                     screen.blit(assets[self.board[j][i]], (x*size, y*size))
 
+    def debugBoard(self, b = board):
+        for i in range(7, -1, -1):
+            for j in range(8):
+                print(b[j][i], end = '')
+                if b[j][i]/10 < 1:
+                    print(" ", end = '')
+                print(" ", end = '')
+            print()
+        print()
+
     def calculateSquare(self, pos, size):
         return (int(pos[0]/size), int(8 - pos[1]/size))
                     
@@ -70,6 +80,8 @@ class Board:
             
     def availableMoves(self, col, row, p):
         out = [[0 for i in range(8)] for j in range(8)]
+        if self.turn and p > 10: return out
+        if not self.turn and p < 10: return out
         piece = p % 10
         
         if piece == 1:        #PAWN
@@ -96,7 +108,7 @@ class Board:
                         out[col][newRow - 1] = 1
                             
         if piece == 2 or piece == 5:        #ROOK/QUEEN
-            direction = [[row,col, i] for i in range(4)] #four directional checking
+            direction = [[col,row, i] for i in range(4)] #four directional checking
             while len(direction) > 0:
                 for i in range(len(direction)):
                     d = direction[i]
@@ -120,7 +132,7 @@ class Board:
                         out[d[0]][d[1]] = 1
 
         if piece == 4 or piece == 5:        #BISHOP/QUEEN
-            direction = [[row,col, i] for i in range(4)] #four directional checking
+            direction = [[col,row, i] for i in range(4)] #four directional checking
             while len(direction) > 0:
                 for i in range(len(direction)):
                     d = direction[i]
