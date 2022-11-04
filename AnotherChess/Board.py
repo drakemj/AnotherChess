@@ -34,8 +34,15 @@ class Board:
                 else:
                     screen.blit(assets[8], (x*size, y*size))
                 if self.board[j][i]:
-                    screen.blit(assets[self.board[j][i]], (x*size, y*size))         
+                    screen.blit(assets[self.board[j][i]], (x*size, y*size))
+
+    def calculateSquare(self, pos, size):
+        return (int(pos[0]/size), int(8 - pos[1]/size))
                     
+    def pickupPiece(self, pos):
+        o = self.board[pos[0]][pos[1]]
+        self.board[pos[0]][pos[1]] = 0
+        return o
                     
     def inBounds(self, col, row):
         return col >= 0 and col < 8 and row >= 0 and row < 8
@@ -61,9 +68,9 @@ class Board:
         else:
             return 2
             
-    def availableMoves(self, col, row):
+    def availableMoves(self, col, row, p):
         out = [[0 for i in range(8)] for j in range(8)]
-        piece = self.board[col][row] % 10
+        piece = p % 10
         
         if piece == 1:        #PAWN
             direction = 1
