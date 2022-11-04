@@ -23,19 +23,6 @@ class Board:
                 self.board[i][0] = 9 - i
                 self.board[i][7] = 19 - i
 
-    def printBoard(self, screen, assets, size):
-        screen.fill((0, 0, 0))
-        for i in range(7, -1, -1):
-            for j in range(8):
-                x = j
-                y = 7 - i
-                if (x + y)%2 == 0:
-                    screen.blit(assets[7], (x*size, y*size))
-                else:
-                    screen.blit(assets[8], (x*size, y*size))
-                if self.board[j][i]:
-                    screen.blit(assets[self.board[j][i]], (x*size, y*size))
-
     def debugBoard(self, b = board):
         for i in range(7, -1, -1):
             for j in range(8):
@@ -45,9 +32,6 @@ class Board:
                 print(" ", end = '')
             print()
         print()
-
-    def calculateSquare(self, pos, size):
-        return (int(pos[0]/size), int(8 - pos[1]/size))
                     
     def pickupPiece(self, pos):
         o = self.board[pos[0]][pos[1]]
