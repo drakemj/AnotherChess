@@ -6,6 +6,7 @@ class Board:
     blackRook2 = False
     whiteKing = False
     blackKing = False
+    heldPiece = 0
     turn = True
 
     #notated columns, rows on the chessboard. (2, 3) is the third column, fourth row (from the bottom left)
@@ -34,9 +35,11 @@ class Board:
         print()
                     
     def pickupPiece(self, pos):
-        o = self.board[pos[0]][pos[1]]
-        self.board[pos[0]][pos[1]] = 0
-        return o
+        self.heldPiece = pos
+        return self.board[pos[0]][pos[1]]
+
+    def placePiece(self):
+        self.heldPiece = 0
                     
     def inBounds(self, col, row):
         return col >= 0 and col < 8 and row >= 0 and row < 8
@@ -52,6 +55,11 @@ class Board:
             if self.board[start[0]][start[1]]/10 < 1:
                 return False
 
+    def move(self, start, end):
+        t = self.board[start[0]][start[1]]
+        self.board[start[0]][start[1]] = 0
+        self.board[end[0]][end[1]] = t
+
     def isOccupied(self, col, row):         #returns 1 if enemy piece, 2 if friendly
         if self.board[col][row] == 0:
             return 0
@@ -62,8 +70,9 @@ class Board:
         else:
             return 2
             
-    def availableMoves(self, col, row, p):
+    def availableMoves(self, col, row):
         out = [[0 for i in range(8)] for j in range(8)]
+        p = self.board[col][row]
         if self.turn and p > 10: return out
         if not self.turn and p < 10: return out
         piece = p % 10

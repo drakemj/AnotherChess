@@ -11,7 +11,6 @@ SQUARE_SIZE = 60
 black = 0, 0, 0
 
 piece = 0
-pieceLocation = 0
 assets = loadAssets(SQUARE_SIZE)
 gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN'])
 
@@ -31,7 +30,6 @@ while True:
         coords = calculateSquare(pos, SQUARE_SIZE)
         if (board.board[coords[0]][coords[1]]): 
             piece = board.pickupPiece(coords)
-            pieceLocation = coords
         currentState = gameState.HOLDPIECE
 
     elif (currentState == gameState.HOLDPIECE):
@@ -45,13 +43,11 @@ while True:
         if (piece):
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, SQUARE_SIZE)
-            if board.availableMoves(pieceLocation[0], pieceLocation[1], piece)[coords[0]][coords[1]]: #kind of yucky. Ideally should
-                board.board[coords[0]][coords[1]] = piece                 #make it so the board doesn't update until here in the first place
+            if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]: 
+                board.move(board.heldPiece, coords)                 
                 board.turn = not board.turn
-            else:
-                board.board[pieceLocation[0]][pieceLocation[1]] = piece
         piece = 0
-        pieceLocation = 0
+        board.placePiece()
         currentState = gameState.REFRESH
 
     elif (currentState == gameState.REFRESH):

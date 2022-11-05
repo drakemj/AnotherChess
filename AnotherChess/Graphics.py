@@ -47,5 +47,7 @@ def printBoard(screen, assets, board, size):
                 screen.blit(assets[7], (x*size, y*size))
             else:
                 screen.blit(assets[8], (x*size, y*size))
+            if board.heldPiece and j == board.heldPiece[0] and i == board.heldPiece[1]:
+                continue
             if board.board[j][i]:
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
