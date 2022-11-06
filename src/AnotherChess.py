@@ -13,7 +13,7 @@ black = 0, 0, 0
 
 piece = 0
 assets = loadAssets(SQUARE_SIZE)
-gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN'])
+gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN', 'GUIUPDATE'])
 
 currentState = gameState.REFRESH
 
@@ -29,6 +29,10 @@ while True:
         if event.type == pygame.QUIT: sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
+        try:
+            if event.ui_element: currentState = gameState.GUIUPDATE
+        except:
+            pass
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button1:
                 print('hi')
@@ -70,4 +74,10 @@ while True:
         printBoard(screen, assets, board, manager, 0, SQUARE_SIZE)
         currentState = gameState.STANDBY
         
+    elif (currentState == gameState.GUIUPDATE):
+        time_delta = clock.tick(60)/1000.0
+        manager.update(time_delta)
+        manager.draw_ui(screen)
+        currentState = gameState.STANDBY
+
     pygame.display.update()
