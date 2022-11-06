@@ -8,6 +8,7 @@ class Board:
     blackKing = False
     heldPiece = 0
     turn = True
+    flipped = False
 
     #notated columns, rows on the chessboard. (2, 3) is the third column, fourth row (from the bottom left)
     #1 - 6 are white pawns, rooks, knights, bishops, queens, and king, respectively. 11-16 are the same for black pieces.
@@ -43,6 +44,9 @@ class Board:
                     
     def inBounds(self, col, row):
         return col >= 0 and col < 8 and row >= 0 and row < 8
+
+    def flip(self):
+        self.flipped = not self.flipped
 
     def checkMove(self, start, end):
         if start == end:

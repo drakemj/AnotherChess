@@ -1,8 +1,10 @@
 import pygame
 
 
-def calculateSquare(pos, size):
-    return (int(pos[0]/size), int(8 - pos[1]/size))
+def calculateSquare(pos, board, size):
+    if (not board.flipped):
+        return (int(pos[0]/size), int(8 - pos[1]/size))
+    return (7 - int(pos[0]/size), 7 - int(8 - pos[1]/size))
 
 def loadAssets(size):
     whitePawn = pygame.image.load("src/assets/Chess_plt60.png")
@@ -43,6 +45,9 @@ def printBoard(screen, assets, board, manager, delta, size):
         for j in range(8):
             x = j
             y = 7 - i
+            if board.flipped:
+                x = 7-x
+                y = 7-y
             if (x + y)%2 == 0:
                 screen.blit(assets[7], (x*size, y*size))
             else:

@@ -22,7 +22,7 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 board = Board()
 
-button1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='button', manager=manager)
+button1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
 
 while True:
     for event in pygame.event.get():
@@ -35,12 +35,13 @@ while True:
             pass
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button1:
-                print('hi')
+                board.flip()
+                currentState = gameState.REFRESH
         manager.process_events(event)
 
     if (currentState == gameState.PICKUP):
         pos = pygame.mouse.get_pos()
-        coords = calculateSquare(pos, SQUARE_SIZE)
+        coords = calculateSquare(pos, board, SQUARE_SIZE)
         if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
             currentState = gameState.STANDBY
             continue
@@ -57,7 +58,7 @@ while True:
     elif (currentState == gameState.PUTDOWN):
         if (piece):
             pos = pygame.mouse.get_pos()
-            coords = calculateSquare(pos, SQUARE_SIZE)
+            coords = calculateSquare(pos, board, SQUARE_SIZE)
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
                 piece = 0
                 board.placePiece()
