@@ -19,5 +19,6 @@ Then, you can run the application by running
 
 `python3 AnotherChess/AnotherChess.py`
 
-and if things are successful, you should see the following window (no current piece movement).
-![image](https://user-images.githubusercontent.com/62521534/199654781-26044fc6-b5ff-43d7-8a91-43f533ad57cc.png)
+and if things are successful, you should see the following window.
+![image](https://user-images.githubusercontent.com/62521534/200151091-abd59539-eb43-4fbe-80f1-5c277dd063c8.png)
+
