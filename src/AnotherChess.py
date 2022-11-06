@@ -25,7 +25,6 @@ board = Board()
 button1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='button', manager=manager)
 
 while True:
-    time_delta = clock.tick(60)/1000.0
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
@@ -48,13 +47,18 @@ while True:
     elif (currentState == gameState.HOLDPIECE):
         if (piece):
             pos = pygame.mouse.get_pos()
-            printBoard(screen, assets, board, SQUARE_SIZE)
+            printBoard(screen, assets, board, manager, 0, SQUARE_SIZE)
             screen.blit(assets[piece], (pos[0] - SQUARE_SIZE/2, pos[1] - SQUARE_SIZE/2))
 
     elif (currentState == gameState.PUTDOWN):
         if (piece):
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, SQUARE_SIZE)
+            if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
+                piece = 0
+                board.placePiece()
+                currentState = gameState.REFRESH
+                continue
             if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]: 
                 board.move(board.heldPiece, coords)                 
                 board.turn = not board.turn
@@ -63,9 +67,7 @@ while True:
         currentState = gameState.REFRESH
 
     elif (currentState == gameState.REFRESH):
-        printBoard(screen, assets, board, SQUARE_SIZE)
+        printBoard(screen, assets, board, manager, 0, SQUARE_SIZE)
         currentState = gameState.STANDBY
-
-    manager.update(time_delta)
-    manager.draw_ui(screen)
+        
     pygame.display.update()
