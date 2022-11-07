@@ -183,10 +183,9 @@ class Board:
             self.turn = not self.turn
         return out 
 
-    def inCheck(self, pos = 0):
-        o = []
-        if not pos:
-            for i in range(8):
+    def findKing(self):
+        pos = 0
+        for i in range(8):
                 for j in range(8):
                     if self.turn and self.board[i][j] == 6:
                         pos = (i, j)
@@ -196,6 +195,13 @@ class Board:
                         break
                 if pos:
                     break
+        return pos
+
+    def inCheck(self, pos = 0, flip = False):
+        o = []
+        if flip: self.turn = not self.turn          # lol
+        if not pos:
+            pos = self.findKing()
         for i in range(8):
             for j in range(8):
                 if self.turn and self.board[i][j] > 10:
@@ -204,6 +210,51 @@ class Board:
                 elif not self.turn and self.board[i][j] < 10:
                     if self.availableMoves(i, j, True)[pos[0]][pos[1]]:
                         o.append((i, j, self.board[i][j]))
-        print(o)
+        if flip: self.turn = not self.turn
         return o
 
+    def moveInCheck(self, start, move):
+        piece = self.board[move[0]][move[1]]
+        self.move(start, move)
+        out = self.inCheck()
+        self.move(move, start)
+        self.board[move[0]][move[1]] = piece
+        return len(out)
+
+    def isCheckmate(self):
+        i = self.inCheck()
+        
+        if not len(i): return False
+
+        pos = self.findKing()
+        
+        for x in range(-1, 2, 1):
+            for y in range(-1, 2, 1):
+                x1 = pos[0] + x
+                y1 = pos[1] + y
+                if (x or y) and self.inBounds(x1, y1):
+                    if self.turn and self.board[x1][y1] < 10 or not self.turn and self.board[x1][y1] > 10:
+                        continue
+                    if not self.moveInCheck(pos, (x1, y1)): return False
+
+        if len(i) == 2: return True
+
+        counterAttackers = self.inCheck((i[0][0], i[0][1]), True)
+        for ca in counterAttackers:
+            if not self.moveInCheck((ca[0], ca[1]), (i[0][0], i[0][1])): return False
+        if i[0][2] == 1 or i[0][2] == 3: return True
+
+        xdir, ydir = 0, 0
+        if pos[0] > i[0][0]: xdir = -1
+        elif pos[0] < i[0][0]: xdir = 1
+        if pos[1] > i[0][1]: ydir = -1
+        elif pos[1] < i[0][1]: ydir = 1
+
+        x, y = pos[0] + xdir, pos[1] + ydir
+        while (x != i[0][0] or y != i[0][1]):
+            print (x, y)
+            defenders = self.inCheck((x, y), True)
+            for d in defenders:
+                if not self.moveInCheck((d[0], d[1]), (x, y)): return False
+
+        return True

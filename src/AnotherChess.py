@@ -66,6 +66,7 @@ while True:
                 board.move(board.heldPiece, coords)
                 if not len(board.inCheck()):                 
                     board.turn = not board.turn
+                    if board.isCheckmate(): print("checkmate")
                 else:
                     board.move(coords, board.heldPiece)
                     board.board[coords[0]][coords[1]] = takenPiece
