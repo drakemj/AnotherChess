@@ -27,12 +27,12 @@ button1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (10
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
+        if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP  #create intermediate state so that pickup beats guiupdate, which beats click??
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
-        try:
-            if event.ui_element: currentState = gameState.GUIUPDATE
-        except:
-            pass
+        # try:
+        #     if event.ui_element: currentState = gameState.GUIUPDATE
+        # except:
+        #     pass
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button1:
                 board.flip()
@@ -60,13 +60,15 @@ while True:
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, board, SQUARE_SIZE)
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
-                piece = 0
-                board.placePiece()
-                currentState = gameState.REFRESH
-                continue
-            if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]: 
-                board.move(board.heldPiece, coords)                 
-                board.turn = not board.turn
+                pass
+            elif board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]:
+                takenPiece = board.board[coords[0]][coords[1]]
+                board.move(board.heldPiece, coords)
+                if not len(board.inCheck()):                 
+                    board.turn = not board.turn
+                else:
+                    board.move(coords, board.heldPiece)
+                    board.board[coords[0]][coords[1]] = takenPiece
         piece = 0
         board.placePiece()
         currentState = gameState.REFRESH

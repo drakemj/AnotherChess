@@ -74,11 +74,14 @@ class Board:
         else:
             return 2
             
-    def availableMoves(self, col, row):
+    def availableMoves(self, col, row, flip = False):
         out = [[0 for i in range(8)] for j in range(8)]
         p = self.board[col][row]
-        if self.turn and p > 10: return out
-        if not self.turn and p < 10: return out
+        if not flip:
+            if self.turn and p > 10: return out
+            if not self.turn and p < 10: return out
+        else:
+            self.turn = not self.turn
         piece = p % 10
         
         if piece == 1:        #PAWN
@@ -176,5 +179,31 @@ class Board:
                         continue
                     else:
                         out[col + i][row + j] = 1
-
+        if flip:
+            self.turn = not self.turn
         return out 
+
+    def inCheck(self, pos = 0):
+        o = []
+        if not pos:
+            for i in range(8):
+                for j in range(8):
+                    if self.turn and self.board[i][j] == 6:
+                        pos = (i, j)
+                        break
+                    elif not self.turn and self.board[i][j] == 16:
+                        pos = (i, j)
+                        break
+                if pos:
+                    break
+        for i in range(8):
+            for j in range(8):
+                if self.turn and self.board[i][j] > 10:
+                    if self.availableMoves(i, j, True)[pos[0]][pos[1]]:
+                        o.append((i, j, self.board[i][j]))
+                elif not self.turn and self.board[i][j] < 10:
+                    if self.availableMoves(i, j, True)[pos[0]][pos[1]]:
+                        o.append((i, j, self.board[i][j]))
+        print(o)
+        return o
+
