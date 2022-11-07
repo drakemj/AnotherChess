@@ -17,7 +17,7 @@ While in the root directory, install required libraries by running
 
 Then, you can run the application by running
 
-`python3 AnotherChess/AnotherChess.py`
+`python3 src/AnotherChess.py`
 
 and if things are successful, you should see the following window.
 ![image](https://user-images.githubusercontent.com/62521534/200151091-abd59539-eb43-4fbe-80f1-5c277dd063c8.png)
