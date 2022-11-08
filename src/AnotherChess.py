@@ -18,6 +18,7 @@ gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUT
 currentState = gameState.REFRESH
 
 screen = pygame.display.set_mode(size)
+screen.fill((255, 255, 255))
 manager = pygame_gui.UIManager((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 board = Board()
@@ -29,10 +30,6 @@ while True:
         if event.type == pygame.QUIT: sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP  #create intermediate state so that pickup beats guiupdate, which beats click??
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
-        # try:
-        #     if event.ui_element: currentState = gameState.GUIUPDATE
-        # except:
-        #     pass
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button1:
                 board.flip()
@@ -52,7 +49,7 @@ while True:
     elif (currentState == gameState.HOLDPIECE):
         if (piece):
             pos = pygame.mouse.get_pos()
-            printBoard(screen, assets, board, manager, 0, SQUARE_SIZE)
+            printBoard(screen, assets, board, SQUARE_SIZE)
             screen.blit(assets[piece], (pos[0] - SQUARE_SIZE/2, pos[1] - SQUARE_SIZE/2))
 
     elif (currentState == gameState.PUTDOWN):
@@ -75,13 +72,11 @@ while True:
         currentState = gameState.REFRESH
 
     elif (currentState == gameState.REFRESH):
-        printBoard(screen, assets, board, manager, 0, SQUARE_SIZE)
+        printBoard(screen, assets, board, SQUARE_SIZE)
         currentState = gameState.STANDBY
-        
-    elif (currentState == gameState.GUIUPDATE):
+
+    elif (currentState == gameState.STANDBY):
         time_delta = clock.tick(60)/1000.0
         manager.update(time_delta)
         manager.draw_ui(screen)
-        currentState = gameState.STANDBY
-
     pygame.display.update()

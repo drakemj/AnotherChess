@@ -39,8 +39,8 @@ def loadAssets(size):
     return [None, whitePawn, whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, whiteSquare, blackSquare, None, None, blackPawn, blackRook, 
     blackKnight, blackBishop, blackQueen, blackKing]
 
-def printBoard(screen, assets, board, manager, delta, size):
-    screen.fill((255, 255, 255))
+def printBoard(screen, assets, board, size):
+    screen.fill((255, 255, 255), (0, 0, size*8, size*8))
     for i in range(7, -1, -1):
         for j in range(8):
             x = j
@@ -57,5 +57,3 @@ def printBoard(screen, assets, board, manager, delta, size):
             if board.board[j][i]:
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
 
-    manager.update(delta)
-    manager.draw_ui(screen)

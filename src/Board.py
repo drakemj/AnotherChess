@@ -252,7 +252,6 @@ class Board:
 
         x, y = pos[0] + xdir, pos[1] + ydir
         while (x != i[0][0] or y != i[0][1]):
-            print (x, y)
             defenders = self.inCheck((x, y), True)
             for d in defenders:
                 if not self.moveInCheck((d[0], d[1]), (x, y)): return False
