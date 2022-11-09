@@ -4,6 +4,7 @@ class Board:
     heldPiece = 0
     turn = True
     flipped = False
+    lastMove = 0
 
     #notated columns, rows on the chessboard. (2, 3) is the third column, fourth row (from the bottom left)
     #1 - 6 are white pawns, rooks, knights, bishops, queens, and king, respectively. 11-16 are the same for black pieces.
@@ -200,6 +201,21 @@ class Board:
         if p == 6: self.flags[3*index] = True
         if self.heldPiece[0] == 0: self.flags[3*index + 1] = True
         if self.heldPiece[0] == 7: self.flags[3*index + 2] = True
+
+    def enPassantCheck(self, coords):
+        if self.board[self.heldPiece[0]][self.heldPiece[1]] % 10 != 1: return False
+
+        if self.turn and not self.heldPiece[1] != 4 and coords[1] != 5: return False
+        if not self.turn and not self.heldPiece[1] != 3 and coords[1] != 2: return False
+        
+        newRow = coords[1]
+        col = coords[0]
+        if (self.inBounds(col, newRow) and self.isOccupied(col, newRow) == 0 and 
+        self.lastMove == (col, self.heldPiece[1]) and self.board[col][self.heldPiece[1]] % 10 == 1):
+            self.board[col][self.heldPiece[1]] = 0
+            self.move(self.heldPiece, coords)
+            return True
+        return False
 
     def castleCheck(self, coords):
         p = self.board[self.heldPiece[0]][self.heldPiece[1]]

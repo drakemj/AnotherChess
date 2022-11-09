@@ -60,13 +60,14 @@ while True:
             coords = calculateSquare(pos, board, SQUARE_SIZE)
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
                 pass
-            elif board.castleCheck(coords):
+            elif board.castleCheck(coords) or board.enPassantCheck(coords):
                 board.turn = not board.turn
             elif board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]:
                 takenPiece = board.board[coords[0]][coords[1]]
                 board.move(board.heldPiece, coords)
                 if not len(board.inCheck()):
-                    board.handleCastleFlags(coords)           
+                    board.handleCastleFlags(coords)
+                    board.lastMove = coords           
                     board.turn = not board.turn
                     if board.isCheckmate(): print("checkmate")
                 else:
