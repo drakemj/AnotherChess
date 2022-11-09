@@ -1,11 +1,6 @@
 class Board:
     board = [[0 for i in range(8)] for j in range(8)]
-    whiteRook1 = False      #bools to keep track of castling rules
-    whiteRook2 = False
-    blackRook1 = False
-    blackRook2 = False
-    whiteKing = False
-    blackKing = False
+    flags = [False for i in range(6)]
     heldPiece = 0
     turn = True
     flipped = False
@@ -196,6 +191,40 @@ class Board:
                 if pos:
                     break
         return pos
+
+    def handleCastleFlags(self, coords):
+        p = self.board[coords[0]][coords[1]] % 10           # this function not going to reduce performance by much, but still messy
+        if p != 2 and p != 6: return
+        index = 0
+        if not self.turn: index = 1
+        if p == 6: self.flags[3*index] = True
+        if self.heldPiece[0] == 0: self.flags[3*index + 1] = True
+        if self.heldPiece[0] == 7: self.flags[3*index + 2] = True
+
+    def castleCheck(self, coords):
+        p = self.board[self.heldPiece[0]][self.heldPiece[1]]
+        if p % 10 != 6:
+            return False
+        if self.turn and p > 10: return False
+        if not self.turn and p < 10: return False
+        if self.inCheck(): return False
+
+        index = 0
+        if not self.turn: index = 1
+        row = [0, 7]
+        if coords == (2, row[index]) and not self.flags[3*index] and not self.flags[3*index+1]:
+            for i in range(3, 1, -1):
+                if self.board[i][row[index]] or (self.inCheck((i, row[index]))): return False
+            self.move((0, row[index]), (3, row[index]))
+            self.move((4, row[index]), (2, row[index]))
+            return True
+        elif coords == (6, row[index]) and not self.flags[3*index] and not self.flags[3*index+2]:
+            for i in range(5, 7, 1):
+                if self.board[i][row[index]] or (self.inCheck((i, row[index]))): return False
+            self.move((7, row[index]), (5, row[index]))
+            self.move((4, row[index]), (6, row[index]))
+            return True
+        return False
 
     def inCheck(self, pos = 0, flip = False):
         o = []
