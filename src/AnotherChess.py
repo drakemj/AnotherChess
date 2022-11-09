@@ -50,7 +50,9 @@ while True:
         if (piece):
             pos = pygame.mouse.get_pos()
             printBoard(screen, assets, board, SQUARE_SIZE)
-            screen.blit(assets[piece], (pos[0] - SQUARE_SIZE/2, pos[1] - SQUARE_SIZE/2))
+            adjustedPos = list(pos)
+            inBounds(adjustedPos, SQUARE_SIZE)
+            screen.blit(assets[piece], (adjustedPos[0] - SQUARE_SIZE/2, adjustedPos[1] - SQUARE_SIZE/2))
 
     elif (currentState == gameState.PUTDOWN):
         if (piece):
