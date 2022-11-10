@@ -263,18 +263,16 @@ class Board:
 
     def inCheck(self, pos = 0, flip = False):
         o = []
-        if flip: self.turn = not self.turn          # lol
         if not pos:
             pos = self.findKing()
         for i in range(8):
             for j in range(8):
                 if self.turn and self.board[i][j] > 10:
-                    if self.availableMoves(i, j, True)[pos[0]][pos[1]]:
+                    if self.availableMoves(i, j, not flip)[pos[0]][pos[1]]:
                         o.append((i, j, self.board[i][j]))
                 elif not self.turn and self.board[i][j] < 10:
-                    if self.availableMoves(i, j, True)[pos[0]][pos[1]]:
+                    if self.availableMoves(i, j, not flip)[pos[0]][pos[1]]:
                         o.append((i, j, self.board[i][j]))
-        if flip: self.turn = not self.turn
         return o
 
     def moveInCheck(self, start, move):
@@ -285,7 +283,7 @@ class Board:
         self.board[move[0]][move[1]] = piece
         return len(out)
 
-    def isCheckmate(self):
+    def isCheckmate(self):      # readability
         i = self.inCheck()
         
         if not len(i): return False
@@ -319,5 +317,7 @@ class Board:
             defenders = self.inCheck((x, y), True)
             for d in defenders:
                 if not self.moveInCheck((d[0], d[1]), (x, y)): return False
+            x += xdir
+            y += ydir
 
         return True
