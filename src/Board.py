@@ -224,8 +224,8 @@ class Board:
     def enPassantCheck(self, coords):
         if self.board[self.heldPiece[0]][self.heldPiece[1]] % 10 != 1: return False
 
-        if self.turn and not self.heldPiece[1] != 4 and coords[1] != 5: return False
-        if not self.turn and not self.heldPiece[1] != 3 and coords[1] != 2: return False
+        if self.turn and not (self.heldPiece[1] == 4 and coords[1] == 5): return False
+        if not self.turn and not (self.heldPiece[1] == 3 and coords[1] == 2): return False
         
         newRow = coords[1]
         col = coords[0]
