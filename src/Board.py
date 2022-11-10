@@ -87,20 +87,20 @@ class Board:
 
             newRow = row + direction
 
-            if self.inBounds(col, newRow) and not self.isOccupied(col, newRow):
+            if self.inBounds(col, newRow) and not self.isOccupied(col, newRow) and not flip:
                 out[col][row+direction] = 1
 
             for i in (-1, 1):
-                if self.inBounds(col + i, newRow) and self.isOccupied(col + i, newRow) == 1:
+                if self.inBounds(col + i, newRow) and (self.isOccupied(col + i, newRow) == 1 or flip):
                     out[col+i][newRow] = 1
 
             if self.turn:
                 if row == 1:
-                    if not self.isOccupied(col, newRow + 1):
+                    if not self.isOccupied(col, newRow + 1) and not flip:
                         out[col][newRow + 1] = 1
             else:
                 if row == 6:
-                    if not self.isOccupied(col, newRow - 1):
+                    if not self.isOccupied(col, newRow - 1) and not flip:
                         out[col][newRow - 1] = 1
                             
         if piece == 2 or piece == 5:        #ROOK/QUEEN
