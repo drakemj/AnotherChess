@@ -13,7 +13,7 @@ black = 0, 0, 0
 
 piece = 0
 assets = loadAssets(SQUARE_SIZE)
-gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN', 'GUIUPDATE'])
+gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN', 'PROMOTE'])
 
 currentState = gameState.REFRESH
 
@@ -24,11 +24,27 @@ clock = pygame.time.Clock()
 board = Board()
 
 button1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
+promoteButtons = 0
+promotePiece = 0
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP  #create intermediate state so that pickup beats guiupdate, which beats click??
+        if currentState == gameState.PROMOTE:
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                for i, button in enumerate(promoteButtons):
+                    if event.ui_element == button:
+                        board.promote(i, promotePiece)
+                        piece = 0
+                        for p in promoteButtons: p.kill()
+                        promoteButtons = 0
+                        board.placePiece()
+                        board.turn = not board.turn
+                        currentState = gameState.REFRESH
+                        break
+            manager.process_events(event)
+            continue
+        if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button1:
@@ -67,15 +83,27 @@ while True:
                 board.move(board.heldPiece, coords)
                 if not len(board.inCheck()):
                     board.handleCastleFlags(coords)
-                    board.lastMove = coords           
-                    board.turn = not board.turn
-                    if board.isCheckmate(): print("checkmate")
+                    board.lastMove = coords
+                    if not (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):    
+                        board.turn = not board.turn
+                        if board.isCheckmate(): print("checkmate")
+                    else:
+                        printBoard(screen, assets, board, SQUARE_SIZE)
+                        currentState = gameState.PROMOTE
+                        promoteButtons = generateButtons(manager, board, assets, coords, SQUARE_SIZE)
+                        promotePiece = coords
                 else:
                     board.move(coords, board.heldPiece)
                     board.board[coords[0]][coords[1]] = takenPiece
-        piece = 0
-        board.placePiece()
-        currentState = gameState.REFRESH
+        if not promoteButtons:
+            piece = 0
+            board.placePiece()
+            currentState = gameState.REFRESH
+
+    elif (currentState == gameState.PROMOTE):
+        time_delta = clock.tick(60)/1000.0
+        manager.update(time_delta)
+        manager.draw_ui(screen)
 
     elif (currentState == gameState.REFRESH):
         printBoard(screen, assets, board, SQUARE_SIZE)
@@ -85,4 +113,5 @@ while True:
         time_delta = clock.tick(60)/1000.0
         manager.update(time_delta)
         manager.draw_ui(screen)
+
     pygame.display.update()

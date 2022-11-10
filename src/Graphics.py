@@ -1,5 +1,5 @@
 import pygame
-
+import pygame_gui
 
 def calculateSquare(pos, board, size):
     if (not board.flipped):
@@ -50,3 +50,20 @@ def printBoard(screen, assets, board, size):
             if board.board[j][i]:
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
 
+def generateButtons(manager, board, assets, coords, size):
+    out = []
+
+    x = coords[0]
+    y = 7 - coords[1]
+    if board.flipped:
+        x = 7 - x
+        y = 7 - y
+
+    direction = 1
+    if y:
+        direction = -1
+
+    for i in range(4):
+        out.append(pygame_gui.elements.UIButton(relative_rect=pygame.Rect((x*size, (y + direction * i)*size), (size, size)), text='1', manager=manager))
+
+    return out

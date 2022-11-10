@@ -69,6 +69,25 @@ class Board:
             return 1
         else:
             return 2
+
+    def promote(self, i, coords):
+        add = 0
+        p = 0
+        if not self.turn:
+            add = 10
+        if i == 0:
+            p = 5 + add
+        elif i == 1:
+            p = 2 + add
+        elif i == 2:
+            p = 3 + add
+        else:
+            p = 4 + add
+
+        self.board[coords[0]][coords[1]] = p
+        return
+
+            
             
     def availableMoves(self, col, row, flip = False):
         out = [[0 for i in range(8)] for j in range(8)]
