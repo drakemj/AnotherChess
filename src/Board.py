@@ -267,10 +267,12 @@ class Board:
             pos = self.findKing()
         for i in range(8):
             for j in range(8):
-                if self.turn and self.board[i][j] > 10:
+                pieceColorBool = self.board[i][j] > 10
+                if flip: pieceColorBool = not pieceColorBool
+                if self.turn and pieceColorBool: 
                     if self.availableMoves(i, j, not flip)[pos[0]][pos[1]]:
                         o.append((i, j, self.board[i][j]))
-                elif not self.turn and self.board[i][j] < 10:
+                elif not self.turn and not pieceColorBool: # probably all of this one if statement in the future
                     if self.availableMoves(i, j, not flip)[pos[0]][pos[1]]:
                         o.append((i, j, self.board[i][j]))
         return o

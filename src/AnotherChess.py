@@ -19,7 +19,7 @@ currentState = gameState.REFRESH
 
 screen = pygame.display.set_mode(size)
 screen.fill((255, 255, 255))
-manager = pygame_gui.UIManager((WIDTH, HEIGHT))
+manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
 clock = pygame.time.Clock()
 board = Board()
 
