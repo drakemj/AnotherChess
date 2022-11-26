@@ -23,7 +23,10 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
 clock = pygame.time.Clock()
 board = Board()
 
-button1 = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
+flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
+newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 175), (100, 50)), text='new game', manager=manager)
+newGameButton.disable()
+
 promoteButtons = 0
 promotePiece = 0
 
@@ -47,9 +50,14 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            if event.ui_element == button1:
+            if event.ui_element == flipButton:
                 board.flip()
                 currentState = gameState.REFRESH
+            if event.ui_element == newGameButton:
+                board = Board()
+                currentState == gameState.REFRESH
+                newGameButton.disable()
+
         manager.process_events(event)
 
     if (currentState == gameState.PICKUP):
@@ -86,7 +94,7 @@ while True:
                     board.lastMove = coords
                     if not (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):    
                         board.turn = not board.turn
-                        if board.isCheckmate(): print("checkmate")
+                        if board.isCheckmate(): newGameButton.enable()
                     else:
                         printBoard(screen, assets, board, SQUARE_SIZE)
                         currentState = gameState.PROMOTE

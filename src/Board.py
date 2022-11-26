@@ -1,6 +1,6 @@
 class Board:
-    board = [[0 for i in range(8)] for j in range(8)]
-    flags = [False for i in range(6)]
+    board = []
+    flags = []
     heldPiece = 0
     turn = True
     flipped = False
@@ -10,6 +10,13 @@ class Board:
     #1 - 6 are white pawns, rooks, knights, bishops, queens, and king, respectively. 11-16 are the same for black pieces.
 
     def __init__(self):
+        self.board = [[0 for i in range(8)] for j in range(8)] # reset members
+        self.flags = [False for i in range(6)]
+        self.heldPiece = 0
+        self.turn = True
+        self.flipped = False
+        self.lastMove = 0
+        
         for i in range(8):
             self.board[i][1] = 1
             self.board[i][6] = 11
