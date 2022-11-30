@@ -24,5 +24,15 @@
              "filled_bar":"#f4251b",
              "unfilled_bar":"#CCCCCC"
          }
+     },
+
+    "promote":
+     {
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_qdt60.png"
+            }
+        }
      }
 }

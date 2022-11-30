@@ -64,6 +64,6 @@ def generateButtons(manager, board, assets, coords, size):
         direction = -1
 
     for i in range(4):
-        out.append(pygame_gui.elements.UIButton(relative_rect=pygame.Rect((x*size, (y + direction * i)*size), (size, size)), text='', manager=manager))
+        out.append(pygame_gui.elements.UIButton(relative_rect=pygame.Rect((x*size, (y + direction * i)*size), (size, size)), text='', manager=manager, object_id="promote"))
 
     return out
