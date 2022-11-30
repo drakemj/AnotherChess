@@ -25,14 +25,120 @@
              "unfilled_bar":"#CCCCCC"
          }
      },
+    
+    "#promote_theme":
+    {
+        "colours": 
+        {
+            "normal_bg":"#45494e",
+             "hovered_bg":"#e80909",
+             "disabled_bg":"#25292e",
+             "selected_bg":"#193754",
+             "dark_bg":"#15191e",
+             "normal_text":"#c5cbd8",
+             "hovered_text":"#FFFFFF",
+             "selected_text":"#FFFFFF",
+             "disabled_text":"#6d736f",
+             "link_text": "#0000EE",
+             "link_hover": "#2020FF",
+             "link_selected": "#551A8B",
+             "text_shadow": "#777777",
+             "normal_border": "#DDDDDD",
+             "hovered_border": "#B0B0B0",
+             "disabled_border": "#808080",
+             "selected_border": "#8080B0",
+             "active_border": "#8080B0",
+             "filled_bar":"#f4251b",
+             "unfilled_bar":"#CCCCCC"
+        }
+    },
 
-    "promote":
+    "promote_0":
      {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_qlt60.png"
+            }
+        }
+     },
+
+     "promote_1":
+     {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_rlt60.png"
+            }
+        }
+     },
+
+     "promote_2":
+     {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_blt60.png"
+            }
+        }
+     },
+
+     "promote_3":
+     {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_nlt60.png"
+            }
+        }
+     },
+
+     "promote_4":
+     {
+        "prototype": "#promote_theme",
         "images":
         {
             "normal_image": {
                 "path": "src/assets/Chess_qdt60.png"
             }
         }
+     },
+
+     "promote_5":
+     {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_rdt60.png"
+            }
+        }
+     },
+
+     "promote_6":
+     {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_bdt60.png"
+            }
+        }
+     },
+
+     "promote_7":
+     {
+        "prototype": "#promote_theme",
+        "images":
+        {
+            "normal_image": {
+                "path": "src/assets/Chess_ndt60.png"
+            }
+        }
      }
+
 }

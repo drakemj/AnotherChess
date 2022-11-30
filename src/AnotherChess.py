@@ -98,7 +98,7 @@ while True:
                     else:
                         printBoard(screen, assets, board, SQUARE_SIZE)
                         currentState = gameState.PROMOTE
-                        promoteButtons = generateButtons(manager, board, assets, coords, SQUARE_SIZE)
+                        promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
                         promotePiece = coords
                 else:
                     board.move(coords, board.heldPiece)

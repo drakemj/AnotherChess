@@ -50,7 +50,7 @@ def printBoard(screen, assets, board, size):
             if board.board[j][i]:
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
 
-def generateButtons(manager, board, assets, coords, size):
+def generateButtons(manager, board, coords, size):
     out = []
 
     x = coords[0]
@@ -63,7 +63,9 @@ def generateButtons(manager, board, assets, coords, size):
     if y:
         direction = -1
 
+    base = 0
+    if not board.turn: base = 4
     for i in range(4):
-        out.append(pygame_gui.elements.UIButton(relative_rect=pygame.Rect((x*size, (y + direction * i)*size), (size, size)), text='', manager=manager, object_id="promote"))
+        out.append(pygame_gui.elements.UIButton(relative_rect=pygame.Rect((x*size, (y + direction * i)*size), (size, size)), text='', manager=manager, object_id="promote_" + str(i + base)))
 
     return out
