@@ -2,6 +2,7 @@ from math import trunc
 from sqlite3 import IntegrityError
 from Board import *
 from Graphics import *
+from Sound import *
 from enum import Enum
 import pygame, sys
 import pygame_gui
@@ -22,6 +23,7 @@ screen.fill((255, 255, 255))
 manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
 clock = pygame.time.Clock()
 board = Board()
+mixer = SoundMixer()
 
 flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
 newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 175), (100, 50)), text='new game', manager=manager)
@@ -79,6 +81,7 @@ while True:
             screen.blit(assets[piece], (adjustedPos[0] - SQUARE_SIZE/2, adjustedPos[1] - SQUARE_SIZE/2))
 
     elif (currentState == gameState.PUTDOWN):
+        mixer.playMove()
         if (piece):
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, board, SQUARE_SIZE)
