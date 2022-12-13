@@ -81,14 +81,17 @@ while True:
             screen.blit(assets[piece], (adjustedPos[0] - SQUARE_SIZE/2, adjustedPos[1] - SQUARE_SIZE/2))
 
     elif (currentState == gameState.PUTDOWN):
-        mixer.playMove()
+        capture, check = False, False
         if (piece):
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, board, SQUARE_SIZE)
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
                 pass
-            elif board.castleCheck(coords) or board.enPassantCheck(coords):
+            elif board.specialMoveCheck(coords, capture):
                 board.turn = not board.turn
+                if board.inCheck(): check = True
+                mixer.playMove(capture, check)
+                if board.isCheckmate(): newGameButton.enable()
             elif board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]:
                 takenPiece = board.board[coords[0]][coords[1]]
                 board.move(board.heldPiece, coords)
@@ -97,6 +100,9 @@ while True:
                     board.lastMove = coords
                     if not (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):    
                         board.turn = not board.turn
+                        if board.inCheck(): check = True
+                        if takenPiece: capture = True
+                        mixer.playMove(capture, check)
                         if board.isCheckmate(): newGameButton.enable()
                     else:
                         printBoard(screen, assets, board, SQUARE_SIZE)

@@ -268,6 +268,11 @@ class Board:
             return True
         return False
 
+    def specialMoveCheck(self, coords, capture):
+        c, e = self.castleCheck(coords), self.enPassantCheck(coords)
+        capture = e
+        return c or e
+
     def inCheck(self, pos = 0, flip = False):
         o = []
         if not pos:

@@ -59,7 +59,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_qlt60.png"
+                "path": "src/assets/pieces/Chess_qlt60.png"
             }
         }
      },
@@ -70,7 +70,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_rlt60.png"
+                "path": "src/assets/pieces/Chess_rlt60.png"
             }
         }
      },
@@ -81,7 +81,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_nlt60.png"
+                "path": "src/assets/pieces/Chess_nlt60.png"
             }
         }
      },
@@ -92,7 +92,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_blt60.png"
+                "path": "src/assets/pieces/Chess_blt60.png"
             }
         }
      },
@@ -103,7 +103,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_qdt60.png"
+                "path": "src/assets/pieces/Chess_qdt60.png"
             }
         }
      },
@@ -114,7 +114,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_rdt60.png"
+                "path": "src/assets/pieces/Chess_rdt60.png"
             }
         }
      },
@@ -125,7 +125,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_ndt60.png"
+                "path": "src/assets/pieces/Chess_ndt60.png"
             }
         }
      },
@@ -136,7 +136,7 @@
         "images":
         {
             "normal_image": {
-                "path": "src/assets/Chess_bdt60.png"
+                "path": "src/assets/pieces/Chess_bdt60.png"
             }
         }
      }
