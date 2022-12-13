@@ -20,11 +20,11 @@ def loadAssets(size):
 
     for i in range(1, 7):
         for j in range(2):
-            o[i + 10*j] = pygame.transform.scale(pygame.image.load("src/assets/Chess_" + pieces[i] + team[j] + "t60.png"), (size, size))
+            o[i + 10*j] = pygame.transform.scale(pygame.image.load("src/assets/pieces/Chess_{0}{1}t60.png".format(pieces[i], team[j])), (size, size))
 
-    whiteSquare = pygame.image.load("src/assets/whiteSq.png")
+    whiteSquare = pygame.image.load("src/assets/pieces/whiteSq.png")
     whiteSquare = pygame.transform.scale(whiteSquare, (size, size))
-    blackSquare = pygame.image.load("src/assets/blackSq.png")
+    blackSquare = pygame.image.load("src/assets/pieces/blackSq.png")
     blackSquare = pygame.transform.scale(blackSquare, (size, size))
 
     o[7] = whiteSquare
