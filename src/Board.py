@@ -344,7 +344,7 @@ class Board:
             if not len(self.inCheck()):
                 self.handleCastleFlags(end)
                 self.lastMove = end
-                if (self.board[start[0]][start[1]] % 10 == 1 and (end[1] == 0 or end[1] == 7)):
+                if (promotePiece != None):
                     self.promote(promotePiece, end)
                 self.turn = not self.turn
                 if self.inCheck(): check = True
@@ -354,4 +354,5 @@ class Board:
                 self.board[end[0]][end[1]] = takenPiece
                 return None
         else: return None
-        return [capture, check]
+        checkmate = self.isCheckmate()
+        return [capture, check, checkmate]

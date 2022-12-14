@@ -40,11 +40,13 @@ while True:
                 for i, button in enumerate(promoteButtons):
                     if event.ui_element == button:
                         board.tryMove(board.heldPiece, promotePiece, i)
+                        if m: 
+                            mixer.playMove(m[0], m[1])
+                            if m[2]: newGameButton.enable()
                         piece = 0
                         for p in promoteButtons: p.kill()
                         promoteButtons = 0
                         board.placePiece()
-                        board.turn = not board.turn
                         currentState = gameState.REFRESH
                         break
             manager.process_events(event)
@@ -87,13 +89,16 @@ while True:
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
                 pass
             elif (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):
-                printBoard(screen, assets, board, SQUARE_SIZE)
-                currentState = gameState.PROMOTE
-                promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
-                promotePiece = coords
+                if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]:
+                    printBoard(screen, assets, board, SQUARE_SIZE)
+                    currentState = gameState.PROMOTE
+                    promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
+                    promotePiece = coords
             else:
                 m = board.tryMove(board.heldPiece, coords, None)
-                if m: mixer.playMove(m[0], m[1])
+                if m: 
+                    mixer.playMove(m[0], m[1])
+                    if m[2]: newGameButton.enable()
         if not promoteButtons:
             piece = 0
             board.placePiece()
