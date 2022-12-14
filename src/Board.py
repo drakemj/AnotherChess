@@ -51,7 +51,7 @@ class Board:
     def flip(self):
         self.flipped = not self.flipped
 
-    def checkMove(self, start, end):
+    def checkMove(self, start, end):   # delete
         if start == end:
             return False
         
@@ -62,12 +62,12 @@ class Board:
             if self.board[start[0]][start[1]]/10 < 1:
                 return False
 
-    def move(self, start, end):
+    def move(self, start, end):             # move piece without checks
         t = self.board[start[0]][start[1]]
         self.board[start[0]][start[1]] = 0
         self.board[end[0]][end[1]] = t
 
-    def isOccupied(self, col, row):         #returns 1 if enemy piece, 2 if friendly
+    def isOccupied(self, col, row):         # returns 1 if enemy piece, 2 if friendly
         if self.board[col][row] == 0:
             return 0
         elif self.turn and self.board[col][row]/10 >= 1:
@@ -94,7 +94,7 @@ class Board:
         self.board[coords[0]][coords[1]] = p
         return
             
-    def availableMoves(self, col, row, flip = False):
+    def availableMoves(self, col, row, flip = False):   # display available moves for piece, not accounting for check or special moves
         out = [[0 for i in range(8)] for j in range(8)]
         p = self.board[col][row]
         if not flip:
@@ -203,7 +203,7 @@ class Board:
             self.turn = not self.turn
         return out 
 
-    def findKing(self):
+    def findKing(self):     # find the king of the current player
         pos = 0
         for i in range(8):
                 for j in range(8):
@@ -226,7 +226,7 @@ class Board:
         if self.heldPiece[0] == 0: self.flags[3*index + 1] = True
         if self.heldPiece[0] == 7: self.flags[3*index + 2] = True
 
-    def enPassantCheck(self, coords):
+    def enPassantCheck(self, coords):       # if the move as shown by the destination coords is en passant, complete if legal
         if self.board[self.heldPiece[0]][self.heldPiece[1]] % 10 != 1: return False
 
         if self.turn and not (self.heldPiece[1] == 4 and coords[1] == 5): return False
@@ -241,7 +241,7 @@ class Board:
             return True
         return False
 
-    def castleCheck(self, coords):
+    def castleCheck(self, coords):      # same basic idea as enPassantCheck
         p = self.board[self.heldPiece[0]][self.heldPiece[1]]
         if p % 10 != 6:
             return False
@@ -270,7 +270,7 @@ class Board:
         c, e = self.castleCheck(coords), self.enPassantCheck(coords)
         return c or e
 
-    def inCheck(self, pos = 0, flip = False):
+    def inCheck(self, pos = 0, flip = False):   # is the player whose turn it is currently in check or not
         o = []
         if not pos:
             pos = self.findKing()
