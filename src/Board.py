@@ -93,8 +93,6 @@ class Board:
 
         self.board[coords[0]][coords[1]] = p
         return
-
-            
             
     def availableMoves(self, col, row, flip = False):
         out = [[0 for i in range(8)] for j in range(8)]
@@ -219,7 +217,7 @@ class Board:
                     break
         return pos
 
-    def handleCastleFlags(self, coords):
+    def handleCastleFlags(self, coords):    # given that a move is already legal, update flags if piece moved is a rook or king.
         p = self.board[coords[0]][coords[1]] % 10           # this function not going to reduce performance by much, but still messy
         if p != 2 and p != 6: return
         index = 0
@@ -268,9 +266,8 @@ class Board:
             return True
         return False
 
-    def specialMoveCheck(self, coords, capture):
+    def specialMoveCheck(self, coords):
         c, e = self.castleCheck(coords), self.enPassantCheck(coords)
-        capture = e
         return c or e
 
     def inCheck(self, pos = 0, flip = False):
@@ -289,7 +286,7 @@ class Board:
                         o.append((i, j, self.board[i][j]))
         return o
 
-    def moveInCheck(self, start, move):
+    def moveInCheck(self, start, move):     # return true if a move will put you in check
         piece = self.board[move[0]][move[1]]
         self.move(start, move)
         out = self.inCheck()
@@ -335,3 +332,25 @@ class Board:
             y += ydir
 
         return True
+
+    def tryMove(self, start, end, promotePiece):
+        check, capture = False, False
+        if self.specialMoveCheck(end):
+            self.turn = not self.turn
+            if self.inCheck(): check = True
+        elif self.availableMoves(start[0], start[1])[end[0]][end[1]]:
+            takenPiece = self.board[end[0]][end[1]]
+            self.move(start, end)
+            if not len(self.inCheck()):
+                self.handleCastleFlags(end)
+                self.lastMove = end
+                if (self.board[start[0]][start[1]] % 10 == 1 and (end[1] == 0 or end[1] == 7)):
+                    self.promote(promotePiece, end)
+                self.turn = not self.turn
+                if self.inCheck(): check = True
+                if takenPiece: capture = True
+            else:
+                self.move(end, start)
+                self.board[end[0]][end[1]] = takenPiece
+                return None
+        return [check, capture]
