@@ -86,15 +86,14 @@ while True:
             coords = calculateSquare(pos, board, SQUARE_SIZE)
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
                 pass
+            elif (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):
+                printBoard(screen, assets, board, SQUARE_SIZE)
+                currentState = gameState.PROMOTE
+                promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
+                promotePiece = coords
             else:
-                if (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):
-                    printBoard(screen, assets, board, SQUARE_SIZE)
-                    currentState = gameState.PROMOTE
-                    promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
-                    promotePiece = coords
-                else:
-                    m = board.tryMove(board.heldPiece, coords, None)
-                    if m: mixer.playMove(m[0], m[1])
+                m = board.tryMove(board.heldPiece, coords, None)
+                if m: mixer.playMove(m[0], m[1])
         if not promoteButtons:
             piece = 0
             board.placePiece()

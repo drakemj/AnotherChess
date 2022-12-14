@@ -353,4 +353,5 @@ class Board:
                 self.move(end, start)
                 self.board[end[0]][end[1]] = takenPiece
                 return None
-        return [check, capture]
+        else: return None
+        return [capture, check]
