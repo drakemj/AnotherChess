@@ -39,7 +39,7 @@ while True:
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 for i, button in enumerate(promoteButtons):
                     if event.ui_element == button:
-                        board.tryMove(board.heldPiece, promotePiece, i)
+                        m = board.tryMove(board.heldPiece, promotePiece, i)
                         if m: 
                             mixer.playMove(m[0], m[1])
                             if m[2]: newGameButton.enable()
@@ -89,7 +89,7 @@ while True:
             if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
                 pass
             elif (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):
-                if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]]:
+                if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]] and not board.moveInCheck(board.heldPiece, coords):
                     printBoard(screen, assets, board, SQUARE_SIZE)
                     currentState = gameState.PROMOTE
                     promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)

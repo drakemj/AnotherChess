@@ -270,7 +270,7 @@ class Board:
         c, e = self.castleCheck(coords), self.enPassantCheck(coords)
         return c or e
 
-    def inCheck(self, pos = 0, flip = False):   # is the player whose turn it is currently in check or not
+    def inCheck(self, pos = 0, flip = False):   # is the player whose turn it is currently in check or not? if so, return list of attackers
         o = []
         if not pos:
             pos = self.findKing()
@@ -286,7 +286,7 @@ class Board:
                         o.append((i, j, self.board[i][j]))
         return o
 
-    def moveInCheck(self, start, move):     # return true if a move will put you in check
+    def moveInCheck(self, start, move):     # return number of attackers if a move will put you in check
         piece = self.board[move[0]][move[1]]
         self.move(start, move)
         out = self.inCheck()
