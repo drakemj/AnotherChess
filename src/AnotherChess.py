@@ -27,6 +27,8 @@ mixer = SoundMixer()
 
 flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
 newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 175), (100, 50)), text='new game', manager=manager)
+forwardButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((260, 500), (40, 40)), text='>', manager=manager)
+backButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((200, 500), (40, 40)), text='<', manager=manager)
 newGameButton.disable()
 
 promoteButtons = 0
@@ -56,12 +58,17 @@ while True:
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == flipButton:
                 board.flip()
-                currentState = gameState.REFRESH
+                currentState = gameState.REFRESH    # gameState redundancy
             if event.ui_element == newGameButton:
                 board = Board()
                 currentState == gameState.REFRESH
                 newGameButton.disable()
-
+            if event.ui_element == forwardButton:
+                board.browseForward()
+                currentState == gameState.REFRESH
+            if event.ui_element == backButton:
+                board.browseBack()
+                currentState == gameState.REFRESH
         manager.process_events(event)
 
     if (currentState == gameState.PICKUP):

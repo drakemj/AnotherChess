@@ -2,9 +2,11 @@ import pygame
 import pygame_gui
 
 def calculateSquare(pos, board, size):
+    if 8 - pos[1]/size < 0: return (-1, -1)
+    x, y = int(pos[0]/size), int(8 - pos[1]/size)
     if (not board.flipped):
-        return (int(pos[0]/size), int(8 - pos[1]/size))
-    return (7 - int(pos[0]/size), 7 - int(8 - pos[1]/size))
+        return (x, y)
+    return (7 - x, 7 - y)
 
 def inBounds(pos, size):
     for i in range(2):

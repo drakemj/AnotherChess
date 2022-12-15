@@ -3,6 +3,7 @@ from Parse import *
 class Board:
     board = []
     storage = GameStack()
+    isCurrentMove = True
     flags = []
     heldPiece = 0
     turn = True
@@ -15,6 +16,7 @@ class Board:
     def __init__(self):
         self.board = [[0 for i in range(8)] for j in range(8)] # reset members
         self.storage = GameStack()
+        self.isCurrentMove = True
         self.flags = [False for i in range(6)]
         self.heldPiece = 0
         self.turn = True
@@ -41,6 +43,18 @@ class Board:
                 print(" ", end = '')
             print()
         print()
+
+    def browseBack(self):
+        self.storage.iterateBack()
+        self.isCurrentMove = False
+        self.retrieveStorage()
+
+    def browseForward(self):
+        if (self.storage.iterateForward()): self.isCurrentMove = True
+        self.retrieveStorage()
+
+    def retrieveStorage(self):
+        self.board = self.storage.convertBoard(self.board)
                     
     def pickupPiece(self, pos):
         self.heldPiece = pos
