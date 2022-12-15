@@ -52,6 +52,14 @@ def printBoard(screen, assets, board, size):
             if board.board[j][i]:
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
 
+def loadGuiButtons(manager):
+    flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
+    newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 175), (100, 50)), text='new game', manager=manager)
+    forwardButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((260, 500), (40, 40)), text='>', manager=manager, object_id="arrows")
+    backButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((200, 500), (40, 40)), text='<', manager=manager, object_id="arrows")
+    newGameButton.disable()
+    return [flipButton, newGameButton, forwardButton, backButton]
+
 def generateButtons(manager, board, coords, size):
     out = []
 

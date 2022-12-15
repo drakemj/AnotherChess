@@ -24,12 +24,7 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
 clock = pygame.time.Clock()
 board = Board()
 mixer = SoundMixer()
-
-flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
-newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 175), (100, 50)), text='new game', manager=manager)
-forwardButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((260, 500), (40, 40)), text='>', manager=manager)
-backButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((200, 500), (40, 40)), text='<', manager=manager)
-newGameButton.disable()
+guiButtons = loadGuiButtons(manager)
 
 promoteButtons = 0
 promotePiece = 0
@@ -44,7 +39,7 @@ while True:
                         m = board.tryMove(board.heldPiece, promotePiece, i)
                         if m: 
                             mixer.playMove(m[0], m[1])
-                            if m[2]: newGameButton.enable()
+                            if m[2]: guiButtons[1].enable()
                         piece = 0
                         for p in promoteButtons: p.kill()
                         promoteButtons = 0
@@ -56,19 +51,16 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            if event.ui_element == flipButton:
+            if event.ui_element == guiButtons[0]:
                 board.flip()
-                currentState = gameState.REFRESH    # gameState redundancy
-            if event.ui_element == newGameButton:
+            elif event.ui_element == guiButtons[1]:
                 board = Board()
-                currentState == gameState.REFRESH
-                newGameButton.disable()
-            if event.ui_element == forwardButton:
+                guiButtons[1].disable()
+            elif event.ui_element == guiButtons[2]:
                 board.browseForward()
-                currentState == gameState.REFRESH
-            if event.ui_element == backButton:
+            elif event.ui_element == guiButtons[3]:
                 board.browseBack()
-                currentState == gameState.REFRESH
+            currentState == gameState.REFRESH
         manager.process_events(event)
 
     if (currentState == gameState.PICKUP):
@@ -105,7 +97,7 @@ while True:
                 m = board.tryMove(board.heldPiece, coords, None)
                 if m: 
                     mixer.playMove(m[0], m[1])
-                    if m[2]: newGameButton.enable()
+                    if m[2]: guiButtons[1].enable()
         if not promoteButtons:
             piece = 0
             board.placePiece()

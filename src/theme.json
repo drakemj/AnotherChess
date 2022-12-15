@@ -25,6 +25,18 @@
              "unfilled_bar":"#CCCCCC"
          }
      },
+
+    "arrows":
+    {
+        "colours": 
+        {
+            "normal_bg":"#000000",
+            "normal_border": "#000000",
+            "hovered_border": "#000000",
+            "disabled_border": "#000000",
+            "active_border": "#000000"
+        }
+    },
     
     "#promote_theme":
     {
