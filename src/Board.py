@@ -1,5 +1,8 @@
+from Parse import *
+
 class Board:
     board = []
+    storage = GameStack()
     flags = []
     heldPiece = 0
     turn = True
@@ -11,6 +14,7 @@ class Board:
 
     def __init__(self):
         self.board = [[0 for i in range(8)] for j in range(8)] # reset members
+        self.storage = GameStack()
         self.flags = [False for i in range(6)]
         self.heldPiece = 0
         self.turn = True
@@ -354,5 +358,6 @@ class Board:
                 self.board[end[0]][end[1]] = takenPiece
                 return None
         else: return None
+        self.storage.pushMove(start, end, promotePiece)
         checkmate = self.isCheckmate()
         return [capture, check, checkmate]
