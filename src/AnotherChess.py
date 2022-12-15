@@ -55,18 +55,21 @@ while True:
                 board.flip()
             elif event.ui_element == guiButtons[1]:
                 board = Board()
-                guiButtons[1].disable()
+                for i in range(1, 4):
+                    guiButtons[i].disable()
             elif event.ui_element == guiButtons[2]:
-                board.browseForward()
+                if board.browseForward(): guiButtons[2].disable()
+                guiButtons[3].enable()
             elif event.ui_element == guiButtons[3]:
-                board.browseBack()
+                if board.browseBack(): guiButtons[3].disable()
+                guiButtons[2].enable()
             currentState == gameState.REFRESH
         manager.process_events(event)
 
     if (currentState == gameState.PICKUP):
         pos = pygame.mouse.get_pos()
         coords = calculateSquare(pos, board, SQUARE_SIZE)
-        if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
+        if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7 or not board.isCurrentMove):
             currentState = gameState.STANDBY
             continue
         if (board.board[coords[0]][coords[1]]): 
@@ -98,6 +101,7 @@ while True:
                 if m: 
                     mixer.playMove(m[0], m[1])
                     if m[2]: guiButtons[1].enable()
+                    guiButtons[3].enable()
         if not promoteButtons:
             piece = 0
             board.placePiece()

@@ -1,4 +1,4 @@
-from Parse import *
+from Storage import *
 
 class Board:
     board = []
@@ -45,13 +45,17 @@ class Board:
         print()
 
     def browseBack(self):
-        self.storage.iterateBack()
+        isStart = self.storage.iterateBack()
         self.isCurrentMove = False
         self.retrieveStorage()
+        if isStart: return True
+        else: return False
 
     def browseForward(self):
         if (self.storage.iterateForward()): self.isCurrentMove = True
         self.retrieveStorage()
+        if self.isCurrentMove: return True
+        return False
 
     def retrieveStorage(self):
         self.board = self.storage.convertBoard(self.board)

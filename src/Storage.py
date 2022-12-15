@@ -6,7 +6,8 @@ class GameStack:
     stack = []
 
     def __init__(self):
-        game = chess.Board()
+        self.game = chess.Board()
+        self.stack = []
 
     def pushMove(self, start, end, promote):
         select = ['q', 'r', 'n', 'b']
@@ -44,6 +45,8 @@ class GameStack:
 
     def iterateBack(self):
         self.stack.append(self.game.pop())
+        if len(self.game.move_stack): return False
+        return True
 
     def iterateForward(self):
         self.game.push(self.stack.pop())
