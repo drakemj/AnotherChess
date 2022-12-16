@@ -23,7 +23,16 @@
              "active_border": "#8080B0",
              "filled_bar":"#f4251b",
              "unfilled_bar":"#CCCCCC"
-         }
+         },
+
+        "font":
+        {
+            "name": "Cascadia",
+            "size": "16",
+            "bold": "0",
+            "italic": "0",
+            "regular_path": "src/assets/fonts/Cascadia.ttf"
+        }
      },
 
     "arrows":

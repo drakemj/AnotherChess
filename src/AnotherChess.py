@@ -8,7 +8,7 @@ import pygame, sys
 import pygame_gui
 
 pygame.init()
-size = WIDTH, HEIGHT = 625, 600
+size = WIDTH, HEIGHT = 675, 625
 SQUARE_SIZE = 60
 black = 0, 0, 0
 
@@ -19,6 +19,7 @@ gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUT
 currentState = gameState.REFRESH
 
 screen = pygame.display.set_mode(size)
+pygame.display.set_caption("AnotherChess Client")
 screen.fill((255, 255, 255))
 manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
 clock = pygame.time.Clock()
@@ -28,6 +29,8 @@ guiButtons = loadGuiButtons(manager)
 
 promoteButtons = 0
 promotePiece = 0
+
+menuTable = createMenu()
 
 while True:
     for event in pygame.event.get():
@@ -51,16 +54,16 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            if event.ui_element == guiButtons[0]:
+            if event.ui_element == guiButtons[0]:       # flip
                 board.flip()
-            elif event.ui_element == guiButtons[1]:
+            elif event.ui_element == guiButtons[1]:     # new game
                 board = Board()
                 for i in range(1, 4):
                     guiButtons[i].disable()
-            elif event.ui_element == guiButtons[2]:
-                if board.browseForward(): guiButtons[2].disable()
+            elif event.ui_element == guiButtons[2]:     # forward
+                if board.browseForward(): guiButtons[2].disable()   # think of more elegant solution
                 guiButtons[3].enable()
-            elif event.ui_element == guiButtons[3]:
+            elif event.ui_element == guiButtons[3]:     # back
                 if board.browseBack(): guiButtons[3].disable()
                 guiButtons[2].enable()
             currentState == gameState.REFRESH
@@ -120,5 +123,6 @@ while True:
         time_delta = clock.tick(60)/1000.0
         manager.update(time_delta)
         manager.draw_ui(screen)
+        menuTable.draw(screen)
 
     pygame.display.update()

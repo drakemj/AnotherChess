@@ -1,5 +1,6 @@
 import pygame
 import pygame_gui
+import pygame_menu
 
 def calculateSquare(pos, board, size):
     if 8 - pos[1]/size < 0: return (-1, -1)
@@ -53,8 +54,8 @@ def printBoard(screen, assets, board, size):
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
 
 def loadGuiButtons(manager):
-    flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 100), (100, 50)), text='flip', manager=manager)
-    newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((500, 175), (100, 50)), text='new game', manager=manager)
+    flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((520, 500), (90, 40)), text='flip', manager=manager)
+    newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((520, 550), (90, 40)), text='new game', manager=manager)
     forwardButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((250, 500), (40, 40)), text='>', manager=manager, object_id="arrows")
     backButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((190, 500), (40, 40)), text='<', manager=manager, object_id="arrows")
     newGameButton.disable()
@@ -62,6 +63,11 @@ def loadGuiButtons(manager):
     backButton.disable()
     return [flipButton, newGameButton, forwardButton, backButton]
 
+def createMenu():
+    tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_background_color=(0,0,0), title_font_size=(16), 
+        title_font_color=(200, 200, 200), title_bar_style=1001, title_font=pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16))
+    return pygame_menu.Menu("moves", 195, 480, position=(100, 0), theme=tableTheme)
+    
 def generateButtons(manager, board, coords, size):
     out = []
 
