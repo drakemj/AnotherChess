@@ -290,7 +290,7 @@ class Board:
 
     def specialMoveCheck(self, coords):
         c, e = self.castleCheck(coords), self.enPassantCheck(coords)
-        return c or e
+        return (c or e, e)
 
     def inCheck(self, pos = 0, flip = False):   # is the player whose turn it is currently in check or not? if so, return list of attackers
         o = []
@@ -357,7 +357,9 @@ class Board:
 
     def tryMove(self, start, end, promotePiece):
         check, capture = False, False
-        if self.specialMoveCheck(end):
+        spm = self.specialMoveCheck(end)
+        capture = spm[1]
+        if spm[0]:
             self.turn = not self.turn
             if self.inCheck(): check = True
         elif self.availableMoves(start[0], start[1])[end[0]][end[1]]:
