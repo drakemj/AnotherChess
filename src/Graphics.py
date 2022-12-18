@@ -64,13 +64,13 @@ def loadGuiButtons(manager):
     return [flipButton, newGameButton, forwardButton, backButton]
 
 def createMenu():
-    tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_font_size=(16), 
+    tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_font_size=(16),
         title_font_color=(200, 200, 200), title_bar_style=1001, title_font=pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16))
     m = pygame_menu.Menu("moves", 195, 480, position=(100, 0), theme=tableTheme)
     m.get_menubar().set_background_color((0, 0, 0, 175))
+    for i in range(10): m.add.button("hi")
+
     return m
-    
-    
     
 def generateButtons(manager, board, coords, size):
     out = []

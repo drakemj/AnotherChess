@@ -33,7 +33,8 @@ promotePiece = 0
 menuTable = createMenu()
 
 while True:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT: sys.exit()
         if currentState == gameState.PROMOTE:
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
@@ -51,7 +52,12 @@ while True:
                         break
             manager.process_events(event)
             continue
-        if event.type == pygame.MOUSEBUTTONDOWN: currentState = gameState.PICKUP
+        if event.type == pygame.MOUSEBUTTONDOWN: 
+            pos = pygame.mouse.get_pos()
+            coords = calculateSquare(pos, board, SQUARE_SIZE)
+            if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7 or not board.isCurrentMove):
+                currentState = gameState.STANDBY
+            else: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == guiButtons[0]:       # flip
@@ -70,11 +76,6 @@ while True:
         manager.process_events(event)
 
     if (currentState == gameState.PICKUP):
-        pos = pygame.mouse.get_pos()
-        coords = calculateSquare(pos, board, SQUARE_SIZE)
-        if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7 or not board.isCurrentMove):
-            currentState = gameState.STANDBY
-            continue
         if (board.board[coords[0]][coords[1]]): 
             piece = board.pickupPiece(coords)
         currentState = gameState.HOLDPIECE
@@ -123,6 +124,7 @@ while True:
         time_delta = clock.tick(60)/1000.0
         manager.update(time_delta)
         manager.draw_ui(screen)
-        menuTable.draw(screen)
 
+    menuTable.update(events)
+    menuTable.draw(screen)
     pygame.display.update()
