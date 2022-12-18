@@ -249,7 +249,10 @@ class Board:
         if self.heldPiece[0] == 7: self.flags[3*index + 2] = True
 
     def enPassantCheck(self, coords):       # if the move as shown by the destination coords is en passant, complete if legal
-        if self.board[self.heldPiece[0]][self.heldPiece[1]] % 10 != 1: return False
+        p = self.board[self.heldPiece[0]][self.heldPiece[1]]
+        if p % 10 != 1: return False
+        if self.turn and p > 10: return False       # consider making function for piece/turn agreement
+        if not self.turn and p < 10: return False
 
         if self.turn and not (self.heldPiece[1] == 4 and coords[1] == 5): return False
         if not self.turn and not (self.heldPiece[1] == 3 and coords[1] == 2): return False
