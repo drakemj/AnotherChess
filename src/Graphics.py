@@ -64,11 +64,16 @@ def loadGuiButtons(manager):
     return [flipButton, newGameButton, forwardButton, backButton]
 
 def createMenu():
+    defaultFont = pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16)
     tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_font_size=(16),
-        title_font_color=(200, 200, 200), title_bar_style=1001, title_font=pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16))
+        title_font_color=(200, 200, 200), title_bar_style=1001, title_font=defaultFont,
+        widget_font=defaultFont, widget_background_color=(35,35,35))
     m = pygame_menu.Menu("moves", 195, 480, position=(100, 0), theme=tableTheme)
     m.get_menubar().set_background_color((0, 0, 0, 175))
-    for i in range(10): m.add.button("hi")
+    for i in range(5): 
+        m.add.button("buttonL", align=pygame_menu.locals.ALIGN_LEFT)
+        m.add.button("buttonR", align=pygame_menu.locals.ALIGN_RIGHT)
+        m.add.vertical_margin(1)
 
     return m
     
