@@ -102,7 +102,8 @@ while True:
                     promotePiece = coords
             else:
                 m = board.tryMove(board.heldPiece, coords, None)
-                if m: 
+                if m:
+                    updateTable(menuTable, board.storage, board.turn)
                     mixer.playMove(m[0], m[1])
                     if m[2]: guiButtons[1].enable()
                     guiButtons[3].enable()
