@@ -74,12 +74,15 @@ def createMenu():
     return m
 
 def updateTable(menu, storage, turn):
+    t = [storage.game.pop()]
+    p = storage.game.variation_san(t)
+    storage.game.push(t[0])
     menu.select_widget(None)
     if turn:
-        menu.add.button("buttonR", margin=(0,0), align=pygame_menu.locals.ALIGN_RIGHT, float=True)
+        menu.add.button(p, margin=(0,0), align=pygame_menu.locals.ALIGN_RIGHT, float=True)
     else:
         menu.add.vertical_margin(1)
-        menu.add.button("buttonL", margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT)
+        menu.add.button(p, margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT)
     menu.get_widgets()[-1].select()
 
 def generateButtons(manager, board, coords, size):
