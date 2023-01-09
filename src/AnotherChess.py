@@ -8,7 +8,7 @@ import pygame, sys
 import pygame_gui
 
 pygame.init()
-size = WIDTH, HEIGHT = 675, 625
+size = WIDTH, HEIGHT = 700, 625
 SQUARE_SIZE = 60
 black = 0, 0, 0
 
@@ -42,6 +42,7 @@ while True:
                     if event.ui_element == button:
                         m = board.tryMove(board.heldPiece, promotePiece, i)
                         if m: 
+                            updateTable(menuTable, board.storage, board.turn)
                             mixer.playMove(m[0], m[1])
                             if m[2]: guiButtons[1].enable()
                         piece = 0
@@ -103,7 +104,7 @@ while True:
             else:
                 m = board.tryMove(board.heldPiece, coords, None)
                 if m:
-                    updateTable(menuTable, board.storage, board.turn)
+                    updateTable(menuTable, board.storage, board.turn, board.storage.game.ply())
                     mixer.playMove(m[0], m[1])
                     if m[2]: guiButtons[1].enable()
                     guiButtons[3].enable()

@@ -68,12 +68,11 @@ def createMenu():
     tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_font_size=(16),
         title_font_color=(200, 200, 200), title_bar_style=1001, title_font=defaultFont,
         widget_font=defaultFont, widget_background_color=(35,35,35))
-    m = pygame_menu.Menu("moves", 195, 480, position=(100, 0), theme=tableTheme, center_content=False)
+    m = pygame_menu.Menu("moves", 220, 480, position=(100, 0), theme=tableTheme, center_content=False)
     m.get_menubar().set_background_color((0, 0, 0, 175))
-
     return m
 
-def updateTable(menu, storage, turn):
+def updateTable(menu, storage, turn, moveNumber):
     t = [storage.game.pop()]
     p = storage.game.variation_san(t)
     storage.game.push(t[0])
@@ -83,7 +82,12 @@ def updateTable(menu, storage, turn):
     else:
         menu.add.vertical_margin(1)
         menu.add.button(p, margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT)
-    menu.get_widgets()[-1].select()
+    r = menu.get_widgets()[-1]
+    r.select()
+    r.set_onselect(functionTest)
+
+def functionTest(a, b, c):
+    print(a, b, c)
 
 def generateButtons(manager, board, coords, size):
     out = []
