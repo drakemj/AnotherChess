@@ -71,8 +71,8 @@ def createMenu():
     m = pygame_menu.Menu("moves", 195, 480, position=(100, 0), theme=tableTheme)
     m.get_menubar().set_background_color((0, 0, 0, 175))
     for i in range(5): 
-        m.add.button("buttonL", align=pygame_menu.locals.ALIGN_LEFT)
-        m.add.button("buttonR", align=pygame_menu.locals.ALIGN_RIGHT)
+        m.add.button("buttonL", margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT)
+        m.add.button("buttonR", margin=(0,0), align=pygame_menu.locals.ALIGN_RIGHT, float=True)
         m.add.vertical_margin(1)
 
     return m
