@@ -78,16 +78,21 @@ def updateTable(menu, storage, turn, moveNumber):
     storage.game.push(t[0])
     menu.select_widget(None)
     if turn:
-        menu.add.button(p, margin=(0,0), align=pygame_menu.locals.ALIGN_RIGHT, float=True)
+        for i, v in enumerate(p):
+            if not v.isdigit(): break
+        menu.add.button(p[i:], margin=(0,0), align=pygame_menu.locals.ALIGN_RIGHT, float=True, button_id=str(moveNumber))
     else:
         menu.add.vertical_margin(1)
-        menu.add.button(p, margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT)
+        menu.add.button(p, margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT, button_id=str(moveNumber))
     r = menu.get_widgets()[-1]
     r.select()
     r.set_onselect(functionTest)
+    menu.scroll_to_widget(r)
 
 def functionTest(a, b, c):
-    print(a, b, c)
+    if a:
+        print(a, b, c)
+        print(b.get_id())
 
 def generateButtons(manager, board, coords, size):
     out = []
