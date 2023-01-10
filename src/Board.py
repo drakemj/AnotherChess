@@ -9,6 +9,7 @@ class Board:
     turn = True
     flipped = False
     lastMove = 0
+    ply = 0
 
     #notated columns, rows on the chessboard. (2, 3) is the third column, fourth row (from the bottom left)
     #1 - 6 are white pawns, rooks, knights, bishops, queens, and king, respectively. 11-16 are the same for black pieces.
@@ -22,6 +23,7 @@ class Board:
         self.turn = True
         self.flipped = False
         self.lastMove = 0
+        self.ply = 0
         
         for i in range(8):
             self.board[i][1] = 1
@@ -48,12 +50,14 @@ class Board:
         isStart = self.storage.iterateBack()
         self.isCurrentMove = False
         self.retrieveStorage()
+        self.ply -= 1                               # consider making a function which does multiple moves at a time. (same for browseForward, ofc)
         if isStart: return True
         else: return False
 
     def browseForward(self):
         if (self.storage.iterateForward()): self.isCurrentMove = True
         self.retrieveStorage()
+        self.ply += 1
         if self.isCurrentMove: return True
         return False
 
@@ -383,4 +387,5 @@ class Board:
         else: return None
         self.storage.pushMove(start, end, promotePiece)
         checkmate = self.isCheckmate()
+        self.ply = self.storage.game.ply()
         return [capture, check, checkmate]

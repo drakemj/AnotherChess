@@ -2,6 +2,8 @@ import pygame
 import pygame_gui
 import pygame_menu
 
+board = 0               # yiiiiiiiikes. Maybe create a graphics class instead? will have to do some minor refactoring
+
 def calculateSquare(pos, board, size):
     if 8 - pos[1]/size < 0: return (-1, -1)
     x, y = int(pos[0]/size), int(8 - pos[1]/size)
@@ -63,16 +65,22 @@ def loadGuiButtons(manager):
     backButton.disable()
     return [flipButton, newGameButton, forwardButton, backButton]
 
-def createMenu():
+def createMenu(b):
     defaultFont = pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16)
     tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_font_size=(16),
         title_font_color=(200, 200, 200), title_bar_style=1001, title_font=defaultFont,
         widget_font=defaultFont, widget_background_color=(35,35,35))
     m = pygame_menu.Menu("moves", 220, 480, position=(100, 0), theme=tableTheme, center_content=False)
     m.get_menubar().set_background_color((0, 0, 0, 175))
+    global board
+    board = b
     return m
 
-def updateTable(menu, storage, turn, moveNumber):
+def updateTable(menu):
+    storage = board.storage
+    turn = board.turn
+    moveNumber = board.storage.game.ply()
+
     t = [storage.game.pop()]
     p = storage.game.variation_san(t)
     storage.game.push(t[0])
@@ -83,16 +91,19 @@ def updateTable(menu, storage, turn, moveNumber):
         menu.add.button(p[i:], margin=(0,0), align=pygame_menu.locals.ALIGN_RIGHT, float=True, button_id=str(moveNumber))
     else:
         menu.add.vertical_margin(1)
-        menu.add.button(p, margin=(18,0), align=pygame_menu.locals.ALIGN_LEFT, button_id=str(moveNumber))
+        menu.add.button(p, margin=(0,0), align=pygame_menu.locals.ALIGN_LEFT, button_id=str(moveNumber))
     r = menu.get_widgets()[-1]
     r.select()
-    r.set_onselect(functionTest)
+    r.set_onselect(buttonBrowse)
     menu.scroll_to_widget(r)
 
-def functionTest(a, b, c):
-    if a:
-        print(a, b, c)
-        print(b.get_id())
+def buttonBrowse(selected, button, menu):
+    if selected:
+        diff = board.ply - int(button.get_id())
+        if diff > 0:
+            for i in range(diff): board.browseBack()
+        else:
+            for i in range(-diff): board.browseForward()
 
 def generateButtons(manager, board, coords, size):
     out = []

@@ -30,7 +30,7 @@ guiButtons = loadGuiButtons(manager)
 promoteButtons = 0
 promotePiece = 0
 
-menuTable = createMenu()
+menuTable = createMenu(board)
 
 while True:
     events = pygame.event.get()
@@ -42,7 +42,7 @@ while True:
                     if event.ui_element == button:
                         m = board.tryMove(board.heldPiece, promotePiece, i)
                         if m: 
-                            updateTable(menuTable, board.storage, board.turn)
+                            updateTable(menuTable)
                             mixer.playMove(m[0], m[1])
                             if m[2]: guiButtons[1].enable()
                         piece = 0
@@ -104,7 +104,7 @@ while True:
             else:
                 m = board.tryMove(board.heldPiece, coords, None)
                 if m:
-                    updateTable(menuTable, board.storage, board.turn, board.storage.game.ply())
+                    updateTable(menuTable)
                     mixer.playMove(m[0], m[1])
                     if m[2]: guiButtons[1].enable()
                     guiButtons[3].enable()
