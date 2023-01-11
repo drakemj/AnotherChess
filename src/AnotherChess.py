@@ -70,9 +70,14 @@ while True:
             elif event.ui_element == guiButtons[2]:     # forward
                 if board.browseForward(): guiButtons[2].disable()   # think of more elegant solution
                 guiButtons[3].enable()
+                menuTable.select_widget(None)
+                menuTable.select_widget(str(board.ply))
             elif event.ui_element == guiButtons[3]:     # back
                 if board.browseBack(): guiButtons[3].disable()
                 guiButtons[2].enable()
+                if (board.ply):
+                    menuTable.select_widget(None) 
+                    menuTable.select_widget(str(board.ply))
             currentState == gameState.REFRESH
         manager.process_events(event)
 
