@@ -64,9 +64,11 @@ while True:
             if event.ui_element == guiButtons[0]:       # flip
                 board.flip()
             elif event.ui_element == guiButtons[1]:     # new game
-                board = Board()
                 for i in range(1, 4):
                     guiButtons[i].disable()
+                menuTable.clear()
+                menuTable.force_surface_update()
+                board.reset()
             elif event.ui_element == guiButtons[2]:     # forward
                 if board.browseForward(): guiButtons[2].disable()   # think of more elegant solution
                 guiButtons[3].enable()

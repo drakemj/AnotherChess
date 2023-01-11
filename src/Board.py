@@ -36,6 +36,9 @@ class Board:
                 self.board[i][0] = 9 - i
                 self.board[i][7] = 19 - i
 
+    def reset(self):
+        self.__init__()
+
     def debugBoard(self, b = board):
         for i in range(7, -1, -1):
             for j in range(8):
