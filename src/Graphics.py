@@ -3,6 +3,7 @@ import pygame_gui
 import pygame_menu
 
 board = 0               # yiiiiiiiikes. Maybe create a graphics class instead? will have to do some minor refactoring
+guiButtons = 0
 
 def calculateSquare(pos, board, size):
     if 8 - pos[1]/size < 0: return (-1, -1)
@@ -65,15 +66,15 @@ def loadGuiButtons(manager):
     backButton.disable()
     return [flipButton, newGameButton, forwardButton, backButton]
 
-def createMenu(b):
+def createMenu(b, g):
     defaultFont = pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16)
     tableTheme = pygame_menu.Theme(background_color=(48,48,48), title_font_size=(16),
         title_font_color=(200, 200, 200), title_bar_style=1001, title_font=defaultFont,
         widget_font=defaultFont, widget_background_color=(35,35,35))
     m = pygame_menu.Menu("moves", 220, 480, position=(100, 0), theme=tableTheme, center_content=False)
     m.get_menubar().set_background_color((0, 0, 0, 175))
-    global board
-    board = b
+    global board, guiButtons
+    board, guiButtons = b, g
     return m
 
 def updateTable(menu):
@@ -102,8 +103,10 @@ def buttonBrowse(selected, button, menu):
         diff = board.ply - int(button.get_id())
         if diff > 0:
             for i in range(diff): board.browseBack()
+            guiButtons[2].enable()
         else:
             for i in range(-diff): board.browseForward()
+            if board.isCurrentMove: guiButtons[2].disable()
 
 def generateButtons(manager, board, coords, size):
     out = []

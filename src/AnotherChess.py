@@ -30,7 +30,7 @@ guiButtons = loadGuiButtons(manager)
 promoteButtons = 0
 promotePiece = 0
 
-menuTable = createMenu(board)
+menuTable = createMenu(board, guiButtons)
 
 while True:
     events = pygame.event.get()
