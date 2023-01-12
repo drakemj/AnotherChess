@@ -389,6 +389,6 @@ class Board:
                 return None
         else: return None
         self.storage.pushMove(start, end, promotePiece)
-        checkmate = self.isCheckmate()
+        checkmate = self.isCheckmate() or self.storage.game.is_stalemate()
         self.ply = self.storage.game.ply()
         return [capture, check, checkmate]
