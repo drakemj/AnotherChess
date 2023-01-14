@@ -2,3 +2,6 @@ pygame
 pygame_gui
 pygame_menu
 chess
+berserk-downstream
+requests
+requests_oauthlib
