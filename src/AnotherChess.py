@@ -3,9 +3,11 @@ from sqlite3 import IntegrityError
 from Board import *
 from Graphics import *
 from Sound import *
+from Client import *
 from enum import Enum
 import pygame, sys
 import pygame_gui
+import threading
 
 pygame.init()
 size = WIDTH, HEIGHT = 700, 625
@@ -25,6 +27,8 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
 clock = pygame.time.Clock()
 board = Board()
 mixer = SoundMixer()
+network = Client()
+board.client = network
 guiButtons = loadGuiButtons(manager)
 
 promoteButtons = 0
@@ -56,7 +60,7 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN: 
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, board, SQUARE_SIZE)
-            if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7 or not board.isCurrentMove):
+            if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7 or not board.isCurrentMove or (board.isOnline and not board.onlineTurn)):
                 currentState = gameState.STANDBY
             else: currentState = gameState.PICKUP
         if event.type == pygame.MOUSEBUTTONUP: currentState = gameState.PUTDOWN
@@ -80,6 +84,15 @@ while True:
                 if (board.ply):
                     menuTable.select_widget(None) 
                     menuTable.select_widget(str(board.ply))
+            elif event.ui_element == guiButtons[4]:
+                network.searchGame(10, 0)
+                board.isOnline = True
+                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer), daemon=True)
+                eventStreamThread.start()
+            elif event.ui_element == guiButtons[5]:
+                if board.isOnline: 
+                    network.clientResign()
+                    guiButtons[1].enable()
             currentState == gameState.REFRESH
         manager.process_events(event)
 

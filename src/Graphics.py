@@ -57,14 +57,17 @@ def printBoard(screen, assets, board, size):
                 screen.blit(assets[board.board[j][i]], (x*size, y*size))
 
 def loadGuiButtons(manager):
-    flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((520, 500), (90, 40)), text='flip', manager=manager)
-    newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((520, 550), (90, 40)), text='new game', manager=manager)
+    flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((480, 500), (90, 40)), text='flip', manager=manager)
+    newGameButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((480, 550), (90, 40)), text='new game', manager=manager)
     forwardButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((250, 500), (40, 40)), text='>', manager=manager, object_id="arrows")
     backButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((190, 500), (40, 40)), text='<', manager=manager, object_id="arrows")
+    searchButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 500), (90, 40)), text='search game', manager=manager)
+    resignButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((600, 550), (90, 40)), text='resign', manager=manager)
     newGameButton.disable()
     forwardButton.disable()
     backButton.disable()
-    return [flipButton, newGameButton, forwardButton, backButton]
+    #resignButton.disable()
+    return [flipButton, newGameButton, forwardButton, backButton, searchButton, resignButton]
 
 def createMenu(b, g):
     defaultFont = pygame.font.Font("src/assets/fonts/Cascadia.ttf", 16)

@@ -10,6 +10,9 @@ class Board:
     flipped = False
     lastMove = 0
     ply = 0
+    isOnline = False
+    onlineTurn = False
+    client = None
 
     #notated columns, rows on the chessboard. (2, 3) is the third column, fourth row (from the bottom left)
     #1 - 6 are white pawns, rooks, knights, bishops, queens, and king, respectively. 11-16 are the same for black pieces.
@@ -24,7 +27,9 @@ class Board:
         self.flipped = False
         self.lastMove = 0
         self.ply = 0
-        
+        self.isOnline = False
+        self.onlineTurn = False
+            
         for i in range(8):
             self.board[i][1] = 1
             self.board[i][6] = 11
@@ -388,7 +393,7 @@ class Board:
                 self.board[end[0]][end[1]] = takenPiece
                 return None
         else: return None
-        self.storage.pushMove(start, end, promotePiece)
+        self.storage.pushMove(start, end, promotePiece, self.isOnline, self.client)
         checkmate = self.isCheckmate() or self.storage.game.is_stalemate()
         self.ply = self.storage.game.ply()
         return [capture, check, checkmate]
