@@ -9,13 +9,13 @@ class GameStack:
         self.game = chess.Board()
         self.stack = []
 
-    def pushMove(self, start, end, promote, online, client):
+    def pushMove(self, start, end, promote, online, turn, client):
         select = ['q', 'r', 'n', 'b']
         s = "{0}{1}{2}{3}".format(chr(ord('a') + start[0]), start[1] + 1, chr(ord('a') + end[0]), end[1] + 1)
         if(promote != None): s += select[promote]
         move = chess.Move.from_uci(s)
         self.game.push(move)
-        if online: client.clientMove(s)
+        if online and turn: client.clientMove(s)
 
     def convertBoard(self, board):
         gameString = str(self.game)

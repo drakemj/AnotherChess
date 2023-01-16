@@ -85,7 +85,9 @@ while True:
                     menuTable.select_widget(None) 
                     menuTable.select_widget(str(board.ply))
             elif event.ui_element == guiButtons[4]:
-                network.searchGame(10, 0)
+                guiButtons[4].disable()
+                searchGameThread = threading.Thread(target = network.searchGame, args=(10, 0), daemon=True)
+                searchGameThread.start()
                 board.isOnline = True
                 eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer), daemon=True)
                 eventStreamThread.start()

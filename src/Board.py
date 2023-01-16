@@ -371,6 +371,7 @@ class Board:
         return True
 
     def tryMove(self, start, end, promotePiece):
+        self.heldPiece = start
         check, capture = False, False
         spm = self.specialMoveCheck(end)
         capture = spm[1]
@@ -393,7 +394,7 @@ class Board:
                 self.board[end[0]][end[1]] = takenPiece
                 return None
         else: return None
-        self.storage.pushMove(start, end, promotePiece, self.isOnline, self.client)
+        self.storage.pushMove(start, end, promotePiece, self.isOnline, self.onlineTurn, self.client)
         checkmate = self.isCheckmate() or self.storage.game.is_stalemate()
         self.ply = self.storage.game.ply()
         return [capture, check, checkmate]
