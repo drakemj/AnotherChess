@@ -1,0 +1,31 @@
+DEBUG:berserk.session:stream POST https://lichess.org/api/board/seek params=None data={'rated': 'false', 'time': 10, 'increment': 0, 'variant': 'standard', 'color': 'random', 'ratingRange': ''} json=None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): lichess.org:443
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/seek HTTP/1.1" 200 None
+DEBUG:berserk.session:stream POST https://lichess.org/api/board/seek params=None data={'rated': 'false', 'time': 10, 'increment': 0, 'variant': 'standard', 'color': 'random', 'ratingRange': ''} json=None
+INFO:root:event stream thread started
+DEBUG:berserk.session:stream GET https://lichess.org/api/stream/event params=None data=None json=None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): lichess.org:443
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (2): lichess.org:443
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "GET /api/stream/event HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/seek HTTP/1.1" 200 None
+DEBUG:berserk.session:stream GET https://lichess.org/api/board/game/stream/h8M5A6Wv params=None data=None json=None
+INFO:root:starting gs thread
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (3): lichess.org:443
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "GET /api/board/game/stream/h8M5A6Wv HTTP/1.1" 200 None
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/e2e4 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (4): lichess.org:443
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/h8M5A6Wv/move/e2e4 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/g1f3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/h8M5A6Wv/move/g1f3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/d2d3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/h8M5A6Wv/move/d2d3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/f1e2 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/h8M5A6Wv/move/f1e2 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/h2h3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/h8M5A6Wv/move/h2h3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/e1g1 params=None data=None json=None
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/h8M5A6Wv/move/e1g1 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/h8M5A6Wv/move/c2c3 params=None data=None json=None
