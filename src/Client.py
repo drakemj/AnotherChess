@@ -22,7 +22,7 @@ class Client:
     def clientResign(self):
         self.client.board.resign_game(self.gameId)
 
-    def eventStream(self, board, menuTable, mixer):
+    def eventStream(self, board, menuTable, mixer, gs, cs):
         logging.info('event stream thread started')
         while True:
             for event in self.client.board.stream_incoming_events():
@@ -32,7 +32,7 @@ class Client:
                     self.gameId = event['game']['gameId']
                     if not event['game']['isMyTurn']: board.flip()
                     else: board.onlineTurn = True
-                    gst = threading.Thread(target=self.gameStateStream, args=(board, menuTable, mixer), daemon=True)
+                    gst = threading.Thread(target=self.gameStateStream, args=(board, menuTable, mixer, gs, cs), daemon=True)
                     gst.start()
                     logging.info('starting gs thread')
                 else:
@@ -41,7 +41,7 @@ class Client:
                     gst.join()
                     logging.info('gst joined, awaiting event')
             
-    def gameStateStream(self, board, menuTable, mixer):
+    def gameStateStream(self, board, menuTable, mixer, gs, cs):
         while self.gameId:
             for event in self.client.board.stream_game_state(self.gameId):
                 print(event)
@@ -57,6 +57,7 @@ class Client:
                             mixer.playMove(m[0], m[1])
                             if m[2]: guiButtons[1].enable()
                             board.onlineTurn = True
+                        cs = gs.REFRESH
                     else:
                         #print("your time left: {0}".format(event['game']['secondsLeft']))
                         board.onlineTurn = False

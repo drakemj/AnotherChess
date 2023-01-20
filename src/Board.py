@@ -1,4 +1,5 @@
 from Storage import *
+import threading
 
 class Board:
     board = []
@@ -394,7 +395,10 @@ class Board:
                 self.board[end[0]][end[1]] = takenPiece
                 return None
         else: return None
-        self.storage.pushMove(start, end, promotePiece, self.isOnline, self.onlineTurn, self.client)
+        move = self.storage.pushMove(start, end, promotePiece)
+        if self.isOnline and self.onlineTurn:
+            cmt = threading.Thread(target=self.client.clientMove, args=(move,), daemon=True)
+            cmt.start()
         checkmate = self.isCheckmate() or self.storage.game.is_stalemate()
         self.ply = self.storage.game.ply()
         return [capture, check, checkmate]

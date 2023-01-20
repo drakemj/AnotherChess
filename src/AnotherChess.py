@@ -89,7 +89,7 @@ while True:
                 searchGameThread = threading.Thread(target = network.searchGame, args=(10, 0), daemon=True)
                 searchGameThread.start()
                 board.isOnline = True
-                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer), daemon=True)
+                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer, gameState, currentState), daemon=True)
                 eventStreamThread.start()
             elif event.ui_element == guiButtons[5]:
                 if board.isOnline: 
