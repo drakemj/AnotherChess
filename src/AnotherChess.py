@@ -31,6 +31,8 @@ network = Client()
 board.client = network
 guiButtons = loadGuiButtons(manager)
 
+threadQueue = []        # mutable data type for keeping track of data between threads in different files
+
 promoteButtons = 0
 promotePiece = 0
 
@@ -89,7 +91,7 @@ while True:
                 searchGameThread = threading.Thread(target = network.searchGame, args=(10, 0), daemon=True)
                 searchGameThread.start()
                 board.isOnline = True
-                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer, gameState, currentState), daemon=True)
+                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer, threadQueue), daemon=True)
                 eventStreamThread.start()
             elif event.ui_element == guiButtons[5]:
                 if board.isOnline: 
@@ -97,6 +99,12 @@ while True:
                     guiButtons[1].enable()
             currentState == gameState.REFRESH
         manager.process_events(event)
+
+    if len(threadQueue):            # maybe support multiple items in queue in future, as needed
+        if threadQueue[0] == 1:
+            currentState = gameState.REFRESH
+            threadQueue.clear()
+
 
     if (currentState == gameState.PICKUP):
         if (board.board[coords[0]][coords[1]]): 

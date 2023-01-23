@@ -35,3 +35,70 @@ DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
 DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/cKN9WRqC/resign HTTP/1.1" 200 11
 INFO:root:game ended, resettting gameID. Awaiting gst
 INFO:root:gst joined, awaiting event
+DEBUG:berserk.session:stream POST https://lichess.org/api/board/seek params=None data={'rated': 'false', 'time': 10, 'increment': 0, 'variant': 'standard', 'color': 'random', 'ratingRange': ''} json=None
+INFO:root:event stream thread started
+DEBUG:berserk.session:stream GET https://lichess.org/api/stream/event params=None data=None json=None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): lichess.org:443
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (2): lichess.org:443
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "GET /api/stream/event HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/seek HTTP/1.1" 200 None
+DEBUG:berserk.session:stream GET https://lichess.org/api/board/game/stream/ZmiBP5aE params=None data=None json=None
+INFO:root:starting gs thread
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "GET /api/board/game/stream/ZmiBP5aE HTTP/1.1" 200 None
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/e2e4 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (3): lichess.org:443
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/e2e4 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/d2d4 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/d2d4 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/g1f3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/g1f3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/d1e2 params=None data=None json=None
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/d1e2 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/g2g3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/g2g3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/b1c3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/b1c3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/f1g2 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/f1g2 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/c3e4 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/c3e4 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/h2h3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/h2h3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/g2f3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/g2f3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/e2f3 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/e2f3 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/e1g1 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/e1g1 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/h3h4 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/h3h4 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/f1e1 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/f1e1 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/c1h6 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/c1h6 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/e1e6 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/e1e6 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/f3f6 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/f3f6 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/e6e7 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/e6e7 HTTP/1.1" 200 11
+DEBUG:berserk.session:request POST https://lichess.org/api/board/game/ZmiBP5aE/move/f6f8 params=None data=None json=None
+DEBUG:urllib3.connectionpool:Resetting dropped connection: lichess.org
+DEBUG:urllib3.connectionpool:https://lichess.org:443 "POST /api/board/game/ZmiBP5aE/move/f6f8 HTTP/1.1" 200 11
+INFO:root:game ended, resettting gameID. Awaiting gst
+INFO:root:gst joined, awaiting event
