@@ -14,7 +14,7 @@ class Client:
         logging.basicConfig(filename='src/logs/client.log', encoding='utf-8', level=logging.DEBUG)
 
     def searchGame(self, clock, increment):
-        self.client.challenges.create("daruxo", False)
+        self.client.challenges.create("daruxo", False, color=berserk.enums.Color.BLACK)
         # print("seek time: ", self.client.board.seek(clock, increment))
 
     def clientMove(self, move):
@@ -35,12 +35,14 @@ class Client:
                     else: board.onlineTurn = True
                     gst = threading.Thread(target=self.gameStateStream, args=(board, menuTable, mixer, tq), daemon=True)
                     gst.start()
+                    tq.append(1)        # update board in main thread
                     logging.info('starting gs thread')
                 else:
-                    self.gameId = None
-                    logging.info('game ended, resettting gameID. Awaiting gst')
-                    gst.join()
-                    logging.info('gst joined, awaiting event')
+                    if self.gameId:
+                        self.gameId = None
+                        logging.info('game ended, resetting gameID. Awaiting gst')
+                        gst.join()
+                        logging.info('gst joined, awaiting event')
             
     def gameStateStream(self, board, menuTable, mixer, tq):
         while self.gameId:
@@ -58,7 +60,7 @@ class Client:
                             mixer.playMove(m[0], m[1])
                             if m[2]: guiButtons[1].enable()
                             board.onlineTurn = True
-                        tq.append(1)
+                        tq.append(1)    # update board in main thread
                     else:
                         #print("your time left: {0}".format(event['game']['secondsLeft']))
                         board.onlineTurn = False
