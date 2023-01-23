@@ -14,7 +14,8 @@ class Client:
         logging.basicConfig(filename='src/logs/client.log', encoding='utf-8', level=logging.DEBUG)
 
     def searchGame(self, clock, increment):
-        print("seek time: ", self.client.board.seek(clock, increment))
+        self.client.challenges.create("daruxo", False)
+        # print("seek time: ", self.client.board.seek(clock, increment))
 
     def clientMove(self, move):
         self.client.board.make_move(self.gameId, move)

@@ -47,7 +47,7 @@ class GameStack:
     def uciToCoords(self, string):
         out = []
         for i in range(2):
-            out.append([ord(string[i*2]) - ord('a'), int(string[i*2 + 1]) - 1])
+            out.append((ord(string[i*2]) - ord('a'), int(string[i*2 + 1]) - 1))
 
         if len(string) > 4:
             c = string[-1]
