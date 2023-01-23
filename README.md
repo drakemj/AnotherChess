@@ -4,10 +4,13 @@ The goal of this project is to train an AI using a camera to determine the posit
 ## Key Functionality
 The enclosed program will keep track of the board. The current state of the board as viewed by the AI will be displayed on the board. As a move is made, the screen will indicate the legality of the move. Different gamemodes can be selected via a UI.
 
+As of right now, there is a working GUI and chess application which adheres to all of the rules. You can flip the board, play out moves, and seek through the game via the table of moves on the right as well as the seek arrows. Additionally, it currently can play against real players through Lichess using a personal access token, which will hopefully be updated to an OAuth2 Session in the future. Online functionality is still a bit buggy at times, but full games can be completed through it.
+
 ## Planned Features
 - Saving your game, so that you can pick it up another time
 - Time control + other settings
-- Connectivity to Lichess
+- Online stability
+- AI recognition + online play with a physical board!
 
 ## Installation
 While in the root directory, install required libraries by running
