@@ -22,6 +22,12 @@ Then, you can run the application by running
 `python3 src/AnotherChess.py`
 
 and if things are successful, you should see the following window.
-![image](https://user-images.githubusercontent.com/62521534/208006959-cf0b6e4c-d129-4dcf-afa5-897e9d7df333.png)
+![image](https://user-images.githubusercontent.com/62521534/214699770-bfac1696-34c4-4af2-bfaf-6ed91b305884.png)
 
+When opening the application, it is by default in analysis mode, so you can play out moves from both sides if moves are legal.
+![move_demo](https://user-images.githubusercontent.com/62521534/214700944-2a4013d4-e31f-4caa-959b-2225fbe95db9.gif)
 
+You can search through the game to get the position at a particular move, using the GUI table on the right or the seek arrows.
+![search_demo](https://user-images.githubusercontent.com/62521534/214701056-8c1905b5-73f4-4d20-8125-e8e087234abf.gif)
+
+You can play an online game using the "search" button on the bottom right.
