@@ -47,12 +47,12 @@ class Client:
     def gameStateStream(self, board, menuTable, mixer, tq):
         while self.gameId:
             for event in self.client.board.stream_game_state(self.gameId):
-                print(event)
                 eventType = event['type']
                 if eventType == "gameState":
                     if not board.onlineTurn:
                         #print("{1}'s time left: {0}".format(event['game']['secondsLeft'], event['game']['opponent']['username']))
                         move = event['moves'].split(' ')[-1]
+                        while not board.isCurrentMove: board.browseForward()
                         c = board.storage.uciToCoords(move)
                         m = board.tryMove(c[0], c[1], c[2])
                         if m: 
