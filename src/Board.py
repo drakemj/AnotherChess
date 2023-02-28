@@ -1,4 +1,5 @@
 from Storage import *
+from Graphics import updateTable
 import threading
 
 class Board:
@@ -82,6 +83,9 @@ class Board:
                     
     def inBounds(self, col, row):
         return col >= 0 and col < 8 and row >= 0 and row < 8
+    
+    def isPromotion(self, piece, coords):
+        return (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7))
 
     def flip(self):
         self.flipped = not self.flipped
@@ -402,3 +406,11 @@ class Board:
         checkmate = self.isCheckmate() or self.storage.game.is_stalemate()
         self.ply = self.storage.game.ply()
         return [capture, check, checkmate]
+    
+    def finalizeMove(self, start, end, promotePiece, menuTable, mixer, guiButtons):
+        m = self.tryMove(start, end, promotePiece)
+        if m: 
+            updateTable(menuTable)
+            mixer.playMove(m[0], m[1])
+            if m[2]: guiButtons[1].enable()
+            guiButtons[3].enable()

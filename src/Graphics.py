@@ -12,13 +12,13 @@ def calculateSquare(pos, board, size):
         return (x, y)
     return (7 - x, 7 - y)
 
-def inBounds(pos, size):
+def makeInBounds(pos, size):
     for i in range(2):
         if pos[i] > size * 7.56:
             pos[i] = size * 7.56
         elif pos[i] < 0:
             pos[i] = 0
-
+            
 def loadAssets(size):
     o = [None for i in range(17)]
     team = ['l', 'd']

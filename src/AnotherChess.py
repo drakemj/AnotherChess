@@ -34,7 +34,7 @@ guiButtons = loadGuiButtons(manager)
 threadQueue = []        # mutable data type for keeping track of data between threads in different files
 
 promoteButtons = 0
-promotePiece = 0
+promoteSquare = 0
 
 menuTable = createMenu(board, guiButtons)
 
@@ -46,11 +46,7 @@ while True:
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 for i, button in enumerate(promoteButtons):
                     if event.ui_element == button:
-                        m = board.tryMove(board.heldPiece, promotePiece, i)
-                        if m: 
-                            updateTable(menuTable)
-                            mixer.playMove(m[0], m[1])
-                            if m[2]: guiButtons[1].enable()
+                        board.finalizeMove(board.heldPiece, promoteSquare, i, menuTable, mixer, guiButtons)
                         piece = 0
                         for p in promoteButtons: p.kill()
                         promoteButtons = 0
@@ -91,7 +87,7 @@ while True:
                 searchGameThread = threading.Thread(target = network.searchGame, args=(10, 0), daemon=True)
                 searchGameThread.start()
                 board.isOnline = True
-                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer, threadQueue), daemon=True)
+                eventStreamThread = threading.Thread(target = network.eventStream, args=(board, menuTable, mixer, guiButtons, threadQueue), daemon=True)
                 eventStreamThread.start()
             elif event.ui_element == guiButtons[5]:
                 if board.isOnline: 
@@ -116,28 +112,22 @@ while True:
             pos = pygame.mouse.get_pos()
             printBoard(screen, assets, board, SQUARE_SIZE)
             adjustedPos = list(pos)
-            inBounds(adjustedPos, SQUARE_SIZE)
+            makeInBounds(adjustedPos, SQUARE_SIZE)
             screen.blit(assets[piece], (adjustedPos[0] - SQUARE_SIZE/2, adjustedPos[1] - SQUARE_SIZE/2))
 
     elif (currentState == gameState.PUTDOWN):
         if (piece):
             pos = pygame.mouse.get_pos()
             coords = calculateSquare(pos, board, SQUARE_SIZE)
-            if (coords[0] < 0 or coords[0] > 7 or coords[1] < 0 or coords[1] > 7):
-                pass
-            elif (piece % 10 == 1 and (coords[1] == 0 or coords[1] == 7)):
-                if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]] and not board.moveInCheck(board.heldPiece, coords):
-                    printBoard(screen, assets, board, SQUARE_SIZE)
-                    currentState = gameState.PROMOTE
-                    promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
-                    promotePiece = coords
-            else:
-                m = board.tryMove(board.heldPiece, coords, None)
-                if m:
-                    updateTable(menuTable)
-                    mixer.playMove(m[0], m[1])
-                    if m[2]: guiButtons[1].enable()
-                    guiButtons[3].enable()
+            if board.inBounds(coords[0], coords[1]):
+                if board.isPromotion(piece, coords):
+                    if board.availableMoves(board.heldPiece[0], board.heldPiece[1])[coords[0]][coords[1]] and not board.moveInCheck(board.heldPiece, coords):
+                        printBoard(screen, assets, board, SQUARE_SIZE)
+                        currentState = gameState.PROMOTE
+                        promoteButtons = generateButtons(manager, board, coords, SQUARE_SIZE)
+                        promoteSquare = coords
+                else:
+                    board.finalizeMove(board.heldPiece, coords, None, menuTable, mixer, guiButtons)
         if not promoteButtons:
             piece = 0
             board.placePiece()
