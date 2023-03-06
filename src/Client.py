@@ -1,7 +1,6 @@
 import berserk
 import threading
 import logging
-from Graphics import *
 
 class Client:
     token, session, client = None, None, None

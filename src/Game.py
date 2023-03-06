@@ -16,16 +16,13 @@ black = 0, 0, 0
 class Game:
     def __init__(self):
         pygame.init()
-        self.piece = 0
-        self.assets = loadAssets(SQUARE_SIZE)
-        self.gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN', 'PROMOTE'])
-
-        self.currentState = self.gameState.REFRESH
-
         self.screen = pygame.display.set_mode(size)
         pygame.display.set_caption("AnotherChess Client")
         self.screen.fill((255, 255, 255))
 
+        self.gameState = Enum('gameState', ['REFRESH', 'STANDBY', 'PICKUP', 'HOLDPIECE', 'PUTDOWN', 'PROMOTE'])
+
+        self.currentState = self.gameState.REFRESH
 
         self.manager = pygame_gui.UIManager((WIDTH, HEIGHT), 'src/theme.json')
         self.clock = pygame.time.Clock()
@@ -33,14 +30,16 @@ class Game:
         self.mixer = SoundMixer()
         self.network = Client()
         self.board.client = self.network
-        self.guiButtons = loadGuiButtons(self.manager)
+
+        self.graphics = Graphics(self)
+        self.menuTable = self.graphics.menu
+        self.assets = self.graphics.loadAssets(SQUARE_SIZE)
 
         self.threadQueue = []        # mutable data type for keeping track of data between threads in different files
 
+        self.piece = 0
         self.promoteButtons = 0
         self.promoteSquare = 0
-
-        self.menuTable = createMenu(self.board, self.guiButtons)
 
     def run(self):
         while True:
@@ -62,7 +61,7 @@ class Game:
                     continue
                 if event.type == pygame.MOUSEBUTTONDOWN: 
                     pos = pygame.mouse.get_pos()
-                    coords = calculateSquare(pos, self.board, SQUARE_SIZE)
+                    coords = self.graphics.calculateSquare(pos, self.board, SQUARE_SIZE)
                     if (not self.board.inBounds(coords[0], coords[1]) or not self.board.isCurrentMove or (self.board.isOnline and not self.board.onlineTurn)):
                         self.currentState = self.gameState.STANDBY
                     else: self.currentState = self.gameState.PICKUP
@@ -115,21 +114,21 @@ class Game:
             elif (self.currentState == self.gameState.HOLDPIECE):
                 if (self.piece):
                     pos = pygame.mouse.get_pos()
-                    printBoard(self.screen, self.assets, self.board, SQUARE_SIZE)
+                    self.graphics.printBoard(self.screen, self.assets, self.board, SQUARE_SIZE)
                     adjustedPos = list(pos)
-                    makeInBounds(adjustedPos, SQUARE_SIZE)
+                    self.graphics.makeInBounds(adjustedPos, SQUARE_SIZE)
                     self.screen.blit(self.assets[self.piece], (adjustedPos[0] - SQUARE_SIZE/2, adjustedPos[1] - SQUARE_SIZE/2))
 
             elif (self.currentState == self.gameState.PUTDOWN):
                 if (self.piece):
                     pos = pygame.mouse.get_pos()
-                    coords = calculateSquare(pos, self.board, SQUARE_SIZE)
+                    coords = self.graphics.calculateSquare(pos, self.board, SQUARE_SIZE)
                     if self.board.inBounds(coords[0], coords[1]):
                         if self.board.isPromotion(self.piece, coords):
                             if self.board.availableMoves(self.board.heldPiece[0], self.board.heldPiece[1])[coords[0]][coords[1]] and not self.board.moveInCheck(self.board.heldPiece, coords):
-                                printBoard(self.screen, self.assets, self.board, SQUARE_SIZE)
+                                self.graphics.printBoard(self.screen, self.assets, self.board, SQUARE_SIZE)
                                 self.currentState = self.gameState.PROMOTE
-                                self.promoteButtons = generateButtons(self.manager, self.board, coords, SQUARE_SIZE)
+                                self.promoteButtons = self.graphics.generateButtons(self.manager, self.board, coords, SQUARE_SIZE)
                                 self.promoteSquare = coords
                         else:
                             self.board.finalizeMove(self.board.heldPiece, coords, None, self)
@@ -144,7 +143,7 @@ class Game:
                 self.manager.draw_ui(self.screen)
 
             elif (self.currentState == self.gameState.REFRESH):
-                printBoard(self.screen, self.assets, self.board, SQUARE_SIZE)
+                self.graphics.printBoard(self.screen, self.assets, self.board, SQUARE_SIZE)
                 self.currentState = self.gameState.STANDBY
 
             elif (self.currentState == self.gameState.STANDBY):

@@ -1,5 +1,4 @@
 from Storage import *
-from Graphics import updateTable
 import threading
 
 class Board:
@@ -410,7 +409,7 @@ class Board:
     def finalizeMove(self, start, end, promotePiece, game):
         m = self.tryMove(start, end, promotePiece)
         if m: 
-            updateTable(game.menuTable)
+            game.graphics.updateTable(game.menuTable)
             game.mixer.playMove(m[0], m[1])
             if m[2]: game.guiButtons[1].enable()
             game.guiButtons[3].enable()
