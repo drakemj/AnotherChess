@@ -5,11 +5,14 @@ import pygame_menu
 
 class Graphics:
     
-    def __init__(self, game):
+    def __init__(self, game, squareSize):
         self.board = 0
         self.guiButtons = 0
+        self.screen = game.screen
+        self.size = squareSize
         game.guiButtons = self.loadGuiButtons(game.manager)
-        self.menu = self.createMenu(game.board, game.guiButtons)
+        game.assets = self.assets = self.loadAssets(squareSize)
+        game.menuTable = self.menu = self.createMenu(game.board, game.guiButtons)
 
     def calculateSquare(self, pos, board, size):
         if 8 - pos[1]/size < 0: return (-1, -1)
@@ -44,23 +47,23 @@ class Graphics:
 
         return o
 
-    def printBoard(self, screen, assets, board, size):
-        screen.fill((255, 255, 255), (0, 0, size*8, size*8))
+    def printBoard(self):
+        self.screen.fill((255, 255, 255), (0, 0, self.size*8, self.size*8))
         for i in range(7, -1, -1):
             for j in range(8):
                 x = j
                 y = 7 - i
-                if board.flipped:
+                if self.board.flipped:
                     x = 7-x
                     y = 7-y
                 if (x + y)%2 == 0:
-                    screen.blit(assets[7], (x*size, y*size))
+                    self.screen.blit(self.assets[7], (x*self.size, y*self.size))
                 else:
-                    screen.blit(assets[8], (x*size, y*size))
-                if board.heldPiece and j == board.heldPiece[0] and i == board.heldPiece[1]:
+                    self.screen.blit(self.assets[8], (x*self.size, y*self.size))
+                if self.board.heldPiece and j == self.board.heldPiece[0] and i == self.board.heldPiece[1]:
                     continue
-                if board.board[j][i]:
-                    screen.blit(assets[board.board[j][i]], (x*size, y*size))
+                if self.board.board[j][i]:
+                    self.screen.blit(self.assets[self.board.board[j][i]], (x*self.size, y*self.size))
 
     def loadGuiButtons(self, manager):
         flipButton = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((480, 500), (90, 40)), text='flip', manager=manager)
