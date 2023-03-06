@@ -407,10 +407,10 @@ class Board:
         self.ply = self.storage.game.ply()
         return [capture, check, checkmate]
     
-    def finalizeMove(self, start, end, promotePiece, menuTable, mixer, guiButtons):
+    def finalizeMove(self, start, end, promotePiece, game):
         m = self.tryMove(start, end, promotePiece)
         if m: 
-            updateTable(menuTable)
-            mixer.playMove(m[0], m[1])
-            if m[2]: guiButtons[1].enable()
-            guiButtons[3].enable()
+            updateTable(game.menuTable)
+            game.mixer.playMove(m[0], m[1])
+            if m[2]: game.guiButtons[1].enable()
+            game.guiButtons[3].enable()

@@ -51,7 +51,7 @@ class Game:
                     if event.type == pygame_gui.UI_BUTTON_PRESSED:
                         for i, button in enumerate(self.promoteButtons):
                             if event.ui_element == button:
-                                self.board.finalizeMove(self.board.heldPiece, self.promoteSquare, i, self.menuTable, self.mixer, self.guiButtons)
+                                self.board.finalizeMove(self.board.heldPiece, self.promoteSquare, i, self)
                                 self.piece = 0
                                 for p in self.promoteButtons: p.kill()
                                 self.promoteButtons = 0
@@ -92,7 +92,7 @@ class Game:
                         searchGameThread = threading.Thread(target = self.network.searchGame, args=(10, 0), daemon=True)
                         searchGameThread.start()
                         self.board.isOnline = True
-                        eventStreamThread = threading.Thread(target = self.network.eventStream, args=(self.board, self.menuTable, self.mixer, self.guiButtons, self.threadQueue), daemon=True)
+                        eventStreamThread = threading.Thread(target = self.network.eventStream, args=(self,), daemon=True)
                         eventStreamThread.start()
                     elif event.ui_element == self.guiButtons[5]:
                         if self.board.isOnline: 
@@ -132,7 +132,7 @@ class Game:
                                 self.promoteButtons = generateButtons(self.manager, self.board, coords, SQUARE_SIZE)
                                 self.promoteSquare = coords
                         else:
-                            self.board.finalizeMove(self.board.heldPiece, coords, None, self.menuTable, self.mixer, self.guiButtons)
+                            self.board.finalizeMove(self.board.heldPiece, coords, None, self)
                 if not self.promoteButtons:
                     self.piece = 0
                     self.board.placePiece()

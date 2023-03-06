@@ -23,7 +23,7 @@ class Client:
     def clientResign(self):
         self.client.board.resign_game(self.gameId)
 
-    def eventStream(self, board, menuTable, mixer, gui, tq):
+    def eventStream(self, game):
         logging.info('event stream thread started')
         while True:
             for event in self.client.board.stream_incoming_events():
@@ -31,11 +31,11 @@ class Client:
                 eventType = event['type']
                 if eventType == "gameStart":
                     self.gameId = event['game']['gameId']
-                    if not event['game']['isMyTurn']: board.flip()
-                    else: board.onlineTurn = True
-                    gst = threading.Thread(target=self.gameStateStream, args=(board, menuTable, mixer, gui, tq), daemon=True)
+                    if not event['game']['isMyTurn']: game.board.flip()
+                    else: game.board.onlineTurn = True
+                    gst = threading.Thread(target=self.gameStateStream, args=(game,), daemon=True)
                     gst.start()
-                    tq.append(1)        # update board in main thread
+                    game.threadQueue.append(1)        # update board in main thread
                     logging.info('starting gs thread')
                 else:
                     if self.gameId:
@@ -44,22 +44,22 @@ class Client:
                         gst.join()
                         logging.info('gst joined, awaiting event')
             
-    def gameStateStream(self, board, menuTable, mixer, gui, tq):
+    def gameStateStream(self, game):
         while self.gameId:
             for event in self.client.board.stream_game_state(self.gameId):
                 eventType = event['type']
                 if eventType == "gameState":
-                    if not board.onlineTurn:
+                    if not game.board.onlineTurn:
                         #print("{1}'s time left: {0}".format(event['game']['secondsLeft'], event['game']['opponent']['username']))
                         move = event['moves'].split(' ')[-1]
-                        while not board.isCurrentMove: board.browseForward()
-                        c = board.storage.uciToCoords(move)
-                        board.finalizeMove(c[0], c[1], c[2], menuTable, mixer, gui)
-                        board.onlineTurn = True
-                        tq.append(1)    # update board in main thread
+                        while not game.board.isCurrentMove: game.board.browseForward()
+                        c = game.board.storage.uciToCoords(move)
+                        game.board.finalizeMove(c[0], c[1], c[2], game)
+                        game.board.onlineTurn = True
+                        game.threadQueue.append(1)    # update board in main thread
                     else:
                         #print("your time left: {0}".format(event['game']['secondsLeft']))
-                        board.onlineTurn = False
+                        game.board.onlineTurn = False
                 elif eventType == "chatLine":
                     print(event)
 
