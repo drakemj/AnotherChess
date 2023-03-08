@@ -1,7 +1,6 @@
 import chess
 import chess.pgn
 
-
 class AnalysisBoard:
     # Sets new board with a empty position and creates new game node for root of game tree
     def __init__(self):
