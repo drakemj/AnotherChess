@@ -1,74 +1,89 @@
-import cv2
+import math
+import cv2 as cv
 import numpy as np
+import matplotlib.pyplot as plt
+from math import inf, floor
+import modules as m
+from chessBoard import ChessBoard
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import time
+import os
 
-def detect_pieces(image1, image2):
-    # Load the chessboard image
-    image1 = cv2.imread(image1)
-    print("Image 1 read")
-    image2 = cv2.imread(image2)
-    print("Image 2 read")
-    if image1 is None:
-        print("Error: Could not load test1.jpg")
-
-    if image2 is None:
-        print("Error: Could not load test2.jpg")
-    # Convert both images to grayscale
-    gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-    gray2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
-
-    # Detect the chessboard corners in both images
-    ret1, corners1 = cv2.findChessboardCorners(gray1, (8,8), None)
-    if ret1 is None: 
-        print("Error no corner in 1")
-    ret2, corners2 = cv2.findChessboardCorners(gray2, (8,8), None)
-    if ret2 is None: 
-        print("Error no corner in 2")
-    print("ret1:", ret1)
-    print("ret2:", ret2)
-    if not ret1 or not ret2:
-        print("No chessboard corners were detected.")
-        return []
-    # If the chessboard corners are found in both images
-    if ret1 and ret2:
-        print("Ret 1 and Ret 2 read")
-    # Refine the corner positions
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-    corners1 = cv2.cornerSubPix(gray1, corners1, (11,11), (-1,-1), criteria)
-    corners2 = cv2.cornerSubPix(gray2, corners2, (11,11), (-1,-1), criteria)
-    # calculate objects distance
-    #ret, R, t, mask = cv2.solvePnPRansac(obj_points, corners2, intrinsic, dist_coeffs)
-    #projected_points, _ = cv2.projectPoints(obj_points, R, t, intrinsic, dist_coeffs)
-    #return projected_points
-# Draw the corners on both images
-    cv2.drawChessboardCorners(image1, (8,8), corners1, ret1)
-    cv2.drawChessboardCorners(image2, (8,8), corners2, ret2)
-
-    # Calculate the size of each square on the chessboard
-    square_size = np.int0(np.linalg.norm(corners1[0] - corners1[7]))
-
-    # Loop over all the squares on the chessboard
-    for r in range(8):
-        for c in range(8):
-            # Calculate the top-left and bottom-right corners of the square
-            top_left1 = corners1[8*r+c].ravel()
-            bottom_right1 = top_left1 + square_size
-            top_left2 = corners2[8*r+c].ravel()
-            bottom_right2 = top_left2 + square_size
-
-            # Extract the patch from both images for the current square
-            patch1 = gray1[top_left1[1]:bottom_right1[1], top_left1[0]:bottom_right1[0]]
-            patch2 = gray2[top_left2[1]:bottom_right2[1], top_left2[0]:bottom_right2[0]]
-            print(patch1.shape, patch2.shape)
-            # Calculate the mean squared difference between the patches
-            mse = np.mean((patch1 - patch2) ** 2)
-
-            # If the mean squared difference is above a threshold, consider it a moved piece
-            if mse > 20:
-                print("A piece has been moved from square ({}, {})".format(r, c))
-            else: print("No pieces have been moved")
 if __name__ == "__main__":
-# Call the function to detect the moved pieces
-    print("test")
-    detect_pieces("test1.jpg", "test2.jpg")
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #video_file = r'Video' + os.sep + 'Video_Org.mp4'
+    #video = []
+    #cap = cv.VideoCapture(0)
+    resolution = (640, 480)
+    camera = PiCamera()
+    camera.resolution = resolution
+    camera.framerate = 30
+    rawCapture = PiRGBArray(camera, size=resolution)
+    time.sleep(0.1)
+    for frame in camera.capture_continuous(rawCapture,format="bgr", use_video_port=True):
+        image = frame.array
+        refFrame = image
+        M, N, _ = np.shape(refFrame)
+        cv.imshow("Arducam Feed",image)
+        rawCapture.truncate(0)
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
+    #ret, frame = cap.read()
+    #refFrame = frame
+        M, N, _ = np.shape(refFrame)
+
+        areaThreshold = 200000 #Threshold area of the contour for detecting chess board boundary
+        #Gaussion, canny, dilation and thresholding
+        thresh = m.getBlob(cv.resize(cv.cvtColor(frame, cv.COLOR_BGR2GRAY), (int(N * 0.5), int(M * 0.5))))
+        contours, hierarchy = cv.findContours(thresh, 1, 2)
+        #Finding the boundary
+        boundary = m.getContour(contours, areaThreshold, True)[0]
+        refA = cv.contourArea(boundary)
+        #Approximating the contour to quadilateral
+        boundary = m.getCorners(boundary)
+        intersections, edgePoints = m.getIntersections(boundary)
+
+        # Reading all the frames
+        while ret:
+            video.append(cv.resize(cv.cvtColor(frame, cv.COLOR_BGR2GRAY), (int(N * 0.5), int(M * 0.5))))
+            ret, frame = cap.read()
+        cap.release()
+
+        frameCount = len(video)
+        # Finding the stable frames in the video for movement detection
+        stableFrames = m.findStableFrames(video, refA, areaThreshold)
+        print("=============================")
+        print("Stable Frame No:", stableFrames)
+        print("=============================")
+
+        # Creating a chess board object
+        chessboard = ChessBoard()
+
+        i = frameNo = 0
+        # reading the initial chessboard image
+        virtualChessboard = chessboard.getBoardImage()
+        # isFirstFrame = True
+        while True:
+            orgFrame = video[frameNo]
+            if i < len(stableFrames) - 1:
+                if frameNo == stableFrames[i + 1]:
+                    # Detecting movement and updating the chess board
+                    virtualChessboard = m.detectMovementAndUpdateBoard(video[stableFrames[i]], video[stableFrames[i + 1]],
+                                                                       intersections, chessboard)
+                    i = i + 1
+
+            # displaying frames
+            cv.imshow('Original', orgFrame)
+            cv.imshow('Virtual', virtualChessboard)
+
+            cv.waitKey(30)
+            frameNo += 1
+            if not frameNo < frameCount:
+                break
+
+            # if isFirstFrame:
+            #     cv.waitKey(30000*2)
+            #     isFirstFrame = False
+                                                                                     
+
+
