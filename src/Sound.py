@@ -4,9 +4,9 @@ class SoundMixer:
     sounds = []
 
     def __init__(self):
-        self.sounds.append(pygame.mixer.Sound("src/assets/sounds/capture.mp3"))
-        self.sounds.append(pygame.mixer.Sound("src/assets/sounds/move-self.mp3"))
-        self.sounds.append(pygame.mixer.Sound("src/assets/sounds/check.mp3"))
+        self.sounds.append(pygame.mixer.Sound("src/assets/sounds/capture.wav"))
+        self.sounds.append(pygame.mixer.Sound("src/assets/sounds/move-self.wav"))
+        self.sounds.append(pygame.mixer.Sound("src/assets/sounds/check.wav"))
 
     def playMove(self, capture, check):
         if check:
